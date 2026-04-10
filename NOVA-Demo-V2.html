@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOVA — Digital HIV Companion · Aotearoa NZ 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#020510;--dp:#070e1c;--panel:#0b1526;--card:rgba(255,255,255,.04);
+  --te:#0E8F98;--tm:#15B8C4;--tl:#6EE6EE;
+  --go:#D4A43C;--gn:#28A652;--re:#C0392B;--pu:#5A67D8;--pk:#E74C8B;
+  --w:#F0F4FF;--mu:rgba(240,244,255,.52);--di:rgba(240,244,255,.26);--dim:rgba(240,244,255,.14);
+  --b7:rgba(255,255,255,.07);--bt:rgba(14,143,152,.28);
+  --fs:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fi:'Cormorant Garamond',serif;
+  --r-m1:#E74C3C;--r-m2:#D4A43C;--r-m3:#0E8F98;--r-m4:#5A67D8;--r-m5:#28A652;--r-m6:#E74C8B;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--w);overflow-x:hidden;line-height:1.65;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--te)}
+
+/* AURORA */
+.aur{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.a1{position:absolute;width:900px;height:900px;top:-300px;left:-200px;border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(14,143,152,.22),transparent 65%);animation:amv 28s ease-in-out infinite}
+.a2{position:absolute;width:700px;height:700px;top:25%;right:-250px;border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(21,184,196,.15),transparent 65%);animation:amv 34s ease-in-out -10s infinite}
+.a3{position:absolute;width:800px;height:800px;bottom:-250px;left:10%;border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(5,12,44,.45),transparent 65%);animation:amv 42s ease-in-out -20s infinite}
+@keyframes amv{0%,100%{transform:translate(0,0) scale(1)}30%{transform:translate(70px,-90px) scale(1.1)}65%{transform:translate(-50px,70px) scale(.93)}}
+canvas#bg{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+/* GRID */
+.grid{position:fixed;inset:0;z-index:1;pointer-events:none;background-image:linear-gradient(rgba(14,143,152,1) 1px,transparent 1px),linear-gradient(90deg,rgba(14,143,152,1) 1px,transparent 1px);background-size:64px 64px;opacity:.022}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(2,5,16,.82);backdrop-filter:blur(22px) saturate(160%);border-bottom:1px solid rgba(14,143,152,.14)}
+.nlogo{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer}
+.nstar svg{width:30px;height:30px}
+.nname{font-family:var(--fs);font-size:14px;font-weight:700;letter-spacing:.3px}
+.nname span{color:var(--tm)}
+.nlinks{display:flex;align-items:center;gap:4px}
+.nlinks a{font-size:12px;color:var(--di);text-decoration:none;padding:7px 13px;border-radius:8px;transition:all .2s;cursor:pointer}
+.nlinks a:hover{color:var(--w);background:rgba(14,143,152,.1)}
+.ncta{background:linear-gradient(135deg,var(--te),var(--tm))!important;color:#fff!important;font-weight:600!important;border-radius:10px!important;box-shadow:0 0 18px rgba(14,143,152,.35)}
+.ncta:hover{box-shadow:0 0 30px rgba(14,143,152,.6)!important}
+.flock{display:flex;align-items:center;gap:5px;cursor:pointer;opacity:.18;background:none;border:none;color:var(--tl);padding:6px 9px;border-radius:7px;transition:opacity .3s;font-size:8px;letter-spacing:2px;text-transform:uppercase}
+.flock:hover{opacity:.65;background:rgba(14,143,152,.1)}
+.flock svg{width:13px;height:13px;fill:currentColor;flex-shrink:0}
+
+/* BANNER */
+.pvb{background:rgba(14,143,152,.07);border-bottom:1px solid rgba(14,143,152,.14);padding:9px 40px;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;z-index:10;margin-top:62px}
+.pvdot{width:6px;height:6px;border-radius:50%;background:var(--tl);flex-shrink:0;animation:bk 2s ease-in-out infinite}
+.pvtxt{font-size:11px;color:rgba(240,244,255,.4);letter-spacing:.3px}
+.pvtxt strong{color:var(--tl)}
+
+/* QUICK EXIT */
+.qx{position:fixed;top:18px;right:18px;z-index:9100;background:var(--re);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-family:var(--fb);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;box-shadow:0 0 24px rgba(192,57,43,.5);transition:all .2s}
+.qx:hover{background:#E53935;transform:translateY(-1px)}
+
+/* PASSWORD MODAL */
+.pwov{position:fixed;inset:0;z-index:8000;background:rgba(2,4,12,.97);backdrop-filter:blur(24px);display:none;align-items:center;justify-content:center;padding:20px}
+.pwov.open{display:flex}
+.pwbox{background:linear-gradient(135deg,#091422,#0d1e38);border:1px solid rgba(14,143,152,.35);border-radius:22px;padding:44px 36px;max-width:400px;width:100%;position:relative}
+.pwbox::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--tm),transparent);border-radius:22px 22px 0 0}
+.pwcls{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--mu);font-size:17px;cursor:pointer;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.pwcls:hover{background:rgba(255,255,255,.1);color:var(--w)}
+.pwico{width:52px;height:52px;border-radius:50%;background:rgba(14,143,152,.12);border:1px solid rgba(14,143,152,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:22px}
+.pwtit{font-family:var(--fs);font-size:23px;font-weight:700;text-align:center;margin-bottom:6px}
+.pwsub{font-size:12px;color:var(--mu);text-align:center;margin-bottom:24px;line-height:1.7}
+.pwsub strong{color:var(--tl)}
+.pwinp{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--b7);border-radius:11px;padding:13px 16px;color:var(--w);font-family:var(--fb);font-size:14px;letter-spacing:4px;outline:none;margin-bottom:11px;text-align:center;transition:border-color .2s}
+.pwinp:focus{border-color:rgba(14,143,152,.55)}
+.pwbtn{width:100%;background:linear-gradient(135deg,var(--te),var(--tm));border:none;border-radius:11px;padding:13px;color:#fff;font-family:var(--fb);font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .3s;box-shadow:0 6px 24px rgba(14,143,152,.28)}
+.pwbtn:hover{transform:translateY(-1px);box-shadow:0 12px 36px rgba(14,143,152,.52)}
+.pwerr{font-size:12px;color:#f87171;text-align:center;margin-top:8px;display:none}
+.pwnote{font-size:10px;color:var(--dim);text-align:center;margin-top:16px;line-height:1.7}
+
+/* HERO */
+.hero{position:relative;z-index:2;min-height:calc(100vh - 90px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px 60px;text-align:center}
+.hero-eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--tl);opacity:.65;margin-bottom:38px}
+
+/* NOVA SYMBOL */
+.nsym{width:150px;height:150px;position:relative;margin:0 auto 42px;overflow:visible}
+.nsym::before{content:"";position:absolute;inset:-36px;border-radius:50%;background:radial-gradient(circle,rgba(14,143,152,.26),transparent 60%);animation:hl 4s ease-in-out infinite;pointer-events:none;z-index:0}
+@keyframes hl{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
+.or{position:absolute;border-radius:50%;top:50%;left:50%;pointer-events:none}
+.or1{width:215%;height:215%;border:1px solid rgba(14,143,152,.13);animation:orr 22s linear infinite}
+.or2{width:162%;height:162%;border:1px solid rgba(21,184,196,.19);animation:orr 14s linear infinite reverse}
+.or3{width:278%;height:278%;border:1px solid rgba(14,143,152,.06);animation:orr 36s linear infinite}
+.odot{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--tm);box-shadow:0 0 12px var(--tm);top:-3.5px;left:50%;margin-left:-3.5px}
+@keyframes orr{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.nsym svg{position:absolute;inset:0;z-index:1}
+.htit{font-family:var(--fs);font-size:clamp(70px,14vw,128px);font-weight:800;letter-spacing:-4px;line-height:.9;margin-bottom:18px;background:linear-gradient(135deg,#fff 0%,var(--tl) 55%,rgba(21,184,196,.7) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 50px rgba(14,143,152,.3))}
+.hsub{font-family:var(--fi);font-size:clamp(17px,2.6vw,25px);font-style:italic;color:rgba(240,244,255,.52);margin-bottom:10px}
+.htag{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(14,143,152,.5);margin-bottom:48px}
+.pcard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(10px);border-radius:20px;padding:26px 34px;max-width:510px;width:100%;margin:0 auto 44px;position:relative;overflow:hidden}
+.pcard::before{content:"";position:absolute;top:0;left:-100%;width:200%;height:2px;background:linear-gradient(90deg,transparent,var(--tm),transparent);animation:sh 3.5s ease-in-out infinite}
+@keyframes sh{0%{left:-100%}100%{left:100%}}
+.pitems{display:flex;flex-direction:column;gap:11px}
+.pi{display:flex;align-items:center;gap:13px;font-size:13px;color:var(--mu);text-align:left;font-weight:300}
+.pck{width:21px;height:21px;flex-shrink:0;border-radius:50%;background:rgba(14,143,152,.14);border:1px solid rgba(14,143,152,.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--tl);transition:all .3s}
+.pi:hover .pck{background:rgba(14,143,152,.28)}
+.btns{display:flex;flex-direction:column;align-items:center;gap:12px}
+.btnp{background:linear-gradient(135deg,var(--te),var(--tm));color:#fff;border:none;padding:17px 48px;border-radius:50px;font-family:var(--fb);font-size:15px;font-weight:600;letter-spacing:.4px;cursor:pointer;box-shadow:0 8px 36px rgba(14,143,152,.4);transition:all .3s}
+.btnp:hover{transform:translateY(-3px);box-shadow:0 16px 52px rgba(14,143,152,.6)}
+.btng{background:transparent;border:1px solid rgba(14,143,152,.32);color:var(--mu);padding:13px 32px;border-radius:50px;font-family:var(--fb);font-size:13px;cursor:pointer;transition:all .3s}
+.btng:hover{border-color:rgba(14,143,152,.65);color:var(--tl)}
+.ctan{font-size:11px;color:var(--dim);letter-spacing:1px}
+
+/* STATS STRIP */
+.sstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(14,143,152,.12);max-width:900px;width:100%;margin:56px auto 0;border-radius:16px;overflow:hidden;border:1px solid rgba(14,143,152,.14)}
+.ssi{background:var(--panel);padding:22px 18px;text-align:center;transition:background .3s}
+.ssi:hover{background:rgba(14,143,152,.08)}
+.ssv{font-family:var(--fs);font-size:30px;font-weight:800;color:var(--tm);line-height:1;margin-bottom:5px}
+.ssl{font-size:11px;color:var(--mu);line-height:1.4}
+.sss{font-size:9px;color:var(--dim);margin-top:3px}
+
+/* SECTION */
+.sec{position:relative;z-index:2;padding:96px 40px}
+.inn{max-width:1200px;margin:0 auto}
+.slbl{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--tm);font-weight:600;margin-bottom:9px}
+.stit{font-family:var(--fs);font-size:clamp(26px,4.5vw,44px);font-weight:700;margin-bottom:11px;line-height:1.15;letter-spacing:-.4px}
+.ssub{font-size:13px;color:var(--mu);margin-bottom:52px;max-width:600px;line-height:1.8;font-weight:300}
+.ctr{text-align:center}.ctr .ssub{margin-left:auto;margin-right:auto}
+hr.dv{border:none;border-top:1px solid rgba(14,143,152,.1);position:relative;z-index:2}
+
+/* ═══════════════════════════════════════
+   MOMENTS — ENHANCED
+═══════════════════════════════════════ */
+.mbg{background:linear-gradient(180deg,var(--bg),var(--dp))}
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+
+.mcard{
+  background:rgba(11,21,38,.7);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:20px;
+  padding:0;
+  cursor:pointer;
+  transition:all .4s cubic-bezier(.16,1,.3,1);
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.mcard::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  opacity:.7;
+  transition:opacity .3s;
+}
+.mcard:hover::before{opacity:1}
+.mcard[data-m="1"]::before{background:linear-gradient(90deg,transparent,var(--r-m1),transparent)}
+.mcard[data-m="2"]::before{background:linear-gradient(90deg,transparent,var(--r-m2),transparent)}
+.mcard[data-m="3"]::before{background:linear-gradient(90deg,transparent,var(--r-m3),transparent)}
+.mcard[data-m="4"]::before{background:linear-gradient(90deg,transparent,var(--r-m4),transparent)}
+.mcard[data-m="5"]::before{background:linear-gradient(90deg,transparent,var(--r-m5),transparent)}
+.mcard[data-m="6"]::before{background:linear-gradient(90deg,transparent,var(--r-m6),transparent)}
+
+.mcard:hover{
+  transform:translateY(-6px);
+  box-shadow:0 24px 60px rgba(0,0,0,.6);
+}
+.mcard[data-m="1"]:hover{border-color:rgba(231,76,60,.28)}
+.mcard[data-m="2"]:hover{border-color:rgba(212,164,60,.28)}
+.mcard[data-m="3"]:hover{border-color:rgba(14,143,152,.38)}
+.mcard[data-m="4"]:hover{border-color:rgba(90,103,216,.28)}
+.mcard[data-m="5"]:hover{border-color:rgba(40,166,82,.28)}
+.mcard[data-m="6"]:hover{border-color:rgba(231,76,139,.28)}
+
+.mcrd-head{padding:26px 24px 18px}
+.mcrd-body{padding:0 24px 22px;flex:1;display:flex;flex-direction:column}
+.mcrd-foot{padding:0 24px 22px;border-top:1px solid rgba(255,255,255,.05);margin-top:auto}
+
+.mnum{
+  font-family:var(--fs);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:3px;
+  margin-bottom:12px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.mnum::after{content:"";flex:1;height:1px;background:currentColor;opacity:.25;display:block;min-width:20px}
+
+.mcard[data-m="1"] .mnum{color:var(--r-m1)}
+.mcard[data-m="2"] .mnum{color:var(--r-m2)}
+.mcard[data-m="3"] .mnum{color:var(--r-m3)}
+.mcard[data-m="4"] .mnum{color:var(--r-m4)}
+.mcard[data-m="5"] .mnum{color:var(--r-m5)}
+.mcard[data-m="6"] .mnum{color:var(--r-m6)}
+
+.mtag{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-size:9px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  font-weight:600;
+  margin-bottom:10px;
+  opacity:.7;
+}
+.mcard[data-m="1"] .mtag{color:var(--r-m1)}
+.mcard[data-m="2"] .mtag{color:var(--r-m2)}
+.mcard[data-m="3"] .mtag{color:var(--r-m3)}
+.mcard[data-m="4"] .mtag{color:var(--r-m4)}
+.mcard[data-m="5"] .mtag{color:var(--r-m5)}
+.mcard[data-m="6"] .mtag{color:var(--r-m6)}
+
+.mtit{font-family:var(--fs);font-size:17px;font-weight:700;line-height:1.2;margin-bottom:3px;letter-spacing:-.2px}
+.mes{font-family:var(--fi);font-size:13px;font-style:italic;color:var(--mu);margin-bottom:14px;font-weight:300}
+
+.mquote{
+  font-family:var(--fi);
+  font-size:13.5px;
+  font-style:italic;
+  line-height:1.7;
+  color:rgba(240,244,255,.58);
+  padding:12px 14px;
+  border-radius:10px;
+  background:rgba(255,255,255,.03);
+  border-left:2px solid;
+  margin-bottom:14px;
+  font-weight:300;
+}
+.mcard[data-m="1"] .mquote{border-color:var(--r-m1);color:rgba(231,100,80,.75)}
+.mcard[data-m="2"] .mquote{border-color:var(--r-m2);color:rgba(212,180,100,.75)}
+.mcard[data-m="3"] .mquote{border-color:var(--r-m3);color:rgba(110,230,238,.65)}
+.mcard[data-m="4"] .mquote{border-color:var(--r-m4);color:rgba(130,140,230,.75)}
+.mcard[data-m="5"] .mquote{border-color:var(--r-m5);color:rgba(80,200,120,.75)}
+.mcard[data-m="6"] .mquote{border-color:var(--r-m6);color:rgba(231,100,160,.75)}
+
+.mdsc{font-size:12px;color:var(--mu);line-height:1.7;font-weight:300;flex:1}
+
+.mmore{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.5px;
+  padding-top:16px;
+  transition:gap .2s;
+}
+.mcard[data-m="1"] .mmore{color:var(--r-m1)}
+.mcard[data-m="2"] .mmore{color:var(--r-m2)}
+.mcard[data-m="3"] .mmore{color:var(--r-m3)}
+.mcard[data-m="4"] .mmore{color:var(--r-m4)}
+.mcard[data-m="5"] .mmore{color:var(--r-m5)}
+.mcard[data-m="6"] .mmore{color:var(--r-m6)}
+.mcard:hover .mmore{gap:10px}
+
+/* MOMENT MODAL */
+.mmodov{position:fixed;inset:0;z-index:7000;background:rgba(2,4,12,.92);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:20px;animation:fdi .2s ease}
+.mmodov.open{display:flex}
+@keyframes fdi{from{opacity:0}to{opacity:1}}
+.mmodbox{
+  background:linear-gradient(145deg,#091422,#0d1e38);
+  border:1px solid rgba(14,143,152,.32);
+  border-radius:24px;
+  padding:0;
+  max-width:560px;
+  width:100%;
+  position:relative;
+  max-height:88vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  animation:slu .3s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes slu{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.mmod-stripe{height:3px;flex-shrink:0;border-radius:24px 24px 0 0}
+.mmodcls{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.06);border:none;color:var(--mu);font-size:16px;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:2}
+.mmodcls:hover{background:rgba(255,255,255,.14);color:var(--w)}
+.mmod-scroll{overflow-y:auto;padding:32px 36px 36px;flex:1}
+.mmod-scroll::-webkit-scrollbar{width:2px}
+.mmod-scroll::-webkit-scrollbar-thumb{background:rgba(14,143,152,.3)}
+.mmod-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px}
+.mmod-num{
+  font-family:var(--fs);
+  font-size:52px;
+  font-weight:800;
+  line-height:1;
+  opacity:.22;
+  flex-shrink:0;
+}
+.mmod-titles{flex:1}
+.mmod-tit{font-family:var(--fs);font-size:24px;font-weight:700;line-height:1.15;margin-bottom:4px}
+.mmod-es{font-family:var(--fi);font-style:italic;font-size:15px;color:var(--mu);margin-bottom:8px;font-weight:300}
+.mmod-tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;font-weight:600;opacity:.75}
+.mmod-quote{
+  font-family:var(--fi);
+  font-size:17px;
+  font-style:italic;
+  line-height:1.75;
+  padding:18px 22px;
+  border-radius:14px;
+  border-left:3px solid;
+  background:rgba(255,255,255,.03);
+  margin-bottom:22px;
+  font-weight:300;
+}
+.mmod-approach-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;font-weight:700;color:var(--tl);margin-bottom:10px}
+.mmod-body{font-size:13px;color:var(--mu);line-height:1.82;font-weight:300;margin-bottom:20px}
+.mmod-ex{margin-top:0;padding:16px 18px;background:rgba(14,143,152,.06);border:1px solid rgba(14,143,152,.14);border-radius:12px}
+.mmod-ex-lbl{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--tl);margin-bottom:10px;font-weight:700}
+.mmod-ex-msg{font-size:12.5px;color:rgba(240,244,255,.62);line-height:1.78;font-style:italic;font-family:var(--fi)}
+.mmod-cta{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.mmod-btn{background:linear-gradient(135deg,var(--te),var(--tm));border:none;border-radius:50px;padding:11px 24px;color:#fff;font-family:var(--fb);font-size:12px;font-weight:600;cursor:pointer;transition:all .3s;letter-spacing:.3px}
+.mmod-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(14,143,152,.4)}
+.mmod-btn-ghost{background:transparent;border:1px solid rgba(14,143,152,.3);border-radius:50px;padding:11px 24px;color:var(--mu);font-family:var(--fb);font-size:12px;cursor:pointer;transition:all .3s}
+.mmod-btn-ghost:hover{border-color:rgba(14,143,152,.6);color:var(--tl)}
+
+/* PILLARS */
+.pbg{background:linear-gradient(to bottom,var(--dp),var(--bg))}
+.pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;max-width:1200px;margin:0 auto}
+.pilc{background:rgba(255,255,255,.02);padding:36px 26px;border-left:2px solid transparent;transition:all .4s}
+.pilc:hover{background:rgba(14,143,152,.06);border-left-color:var(--te)}
+.pnum{font-family:var(--fs);font-size:50px;font-weight:800;color:rgba(14,143,152,.2);line-height:1;margin-bottom:14px}
+.pen{font-size:15px;font-weight:600;margin-bottom:3px}
+.pes{font-size:11px;color:var(--mu);font-style:italic;margin-bottom:14px}
+.pdsc{font-size:12px;color:var(--mu);line-height:1.75;font-weight:300}
+
+/* DASHBOARD */
+#pdash{display:none;position:relative;z-index:2;background:linear-gradient(180deg,#050c1c,var(--bg));border-top:2px solid var(--te)}
+#pdash::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--tm),transparent)}
+@keyframes di{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+.abar{background:rgba(14,143,152,.1);border-bottom:1px solid rgba(14,143,152,.2);padding:11px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.abadge{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--tl);font-family:var(--fs)}
+.adot{width:7px;height:7px;border-radius:50%;background:var(--gn);animation:bk 2s ease-in-out infinite}
+.aout{font-size:10px;color:var(--mu);cursor:pointer;background:none;border:none;letter-spacing:1px;text-transform:uppercase;transition:color .2s;font-family:var(--fb)}
+.aout:hover{color:var(--tl)}
+.dbody{padding:72px 40px}
+.dinn{max-width:1200px;margin:0 auto}
+.ddiscl{background:rgba(14,143,152,.07);border:1px solid rgba(14,143,152,.18);border-radius:11px;padding:12px 20px;margin-bottom:46px;text-align:center;font-size:12px;color:var(--mu)}
+.ddiscl strong{color:var(--tl)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:18px}
+.gf{margin-bottom:18px}
+.dcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:24px;position:relative;overflow:hidden}
+.dcard:hover{border-color:rgba(14,143,152,.22)}
+.dcard::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.dtl::before{background:linear-gradient(90deg,transparent,var(--tm),transparent)}
+.dgd::before{background:linear-gradient(90deg,transparent,var(--gn),transparent)}
+.dgo::before{background:linear-gradient(90deg,transparent,var(--go),transparent)}
+.dpu::before{background:linear-gradient(90deg,transparent,var(--pu),transparent)}
+.dpk::before{background:linear-gradient(90deg,transparent,#E74C8B,transparent)}
+.drd::before{background:linear-gradient(90deg,transparent,var(--re),transparent)}
+.dtit{font-size:14px;font-weight:600;color:rgba(240,244,255,.86);margin-bottom:3px;font-family:var(--fs)}
+.dsub{font-size:11px;color:rgba(240,244,255,.3);letter-spacing:.5px;margin-bottom:14px}
+.ddl{position:absolute;top:12px;right:12px;background:rgba(14,143,152,.12);border:1px solid rgba(14,143,152,.25);border-radius:7px;padding:4px 10px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tl);cursor:pointer;font-family:var(--fb);transition:all .2s}
+.ddl:hover{background:rgba(14,143,152,.25);color:#fff}
+.cw{position:relative;height:220px;margin-top:4px}
+.cw canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+.cw-t{position:relative;height:260px;margin-top:4px}
+.cw-t canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+.krow{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:18px}
+.kc{background:var(--card);border:1px solid var(--b7);border-radius:12px;padding:22px 18px;text-align:center}
+.kv{font-family:var(--fs);font-size:42px;font-weight:800;color:var(--tm);line-height:1;margin-bottom:5px}
+.kl{font-size:11px;color:var(--mu);line-height:1.4;font-weight:300}
+.sbars{display:flex;flex-direction:column;gap:11px;margin-top:4px}
+.sbar{display:flex;align-items:center;gap:9px}
+.sbar-l{font-size:11px;color:var(--mu);width:138px;flex-shrink:0;line-height:1.3;font-weight:300}
+.sbar-t{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.sbar-f{height:100%;border-radius:4px;transition:width 1.5s cubic-bezier(.16,1,.3,1)}
+.sbar-v{font-size:11px;font-weight:600;color:var(--mu);width:30px;text-align:right}
+.nmw{position:relative}
+.nsvg{width:100%;max-height:370px}
+.rdot{cursor:pointer}.rdot circle{transition:all .3s}
+.rdot:hover circle{filter:brightness(1.38)}
+.mtt{position:absolute;background:rgba(4,8,20,.97);border:1px solid rgba(14,143,152,.4);border-radius:9px;padding:9px 13px;font-size:12px;pointer-events:none;opacity:0;transition:opacity .2s;z-index:10;min-width:155px;display:none}
+.mtt.on{opacity:1;display:block}
+.mtt-t{font-weight:600;color:var(--tl);margin-bottom:3px}
+.mtt-s{color:var(--mu);font-size:11px;line-height:1.5}
+.dl-all{display:flex;align-items:center;gap:12px;margin-bottom:36px;flex-wrap:wrap}
+.dl-btn{background:rgba(14,143,152,.1);border:1px solid rgba(14,143,152,.25);border-radius:10px;padding:9px 18px;font-size:12px;color:var(--tl);cursor:pointer;font-family:var(--fb);display:flex;align-items:center;gap:7px;transition:all .2s;font-weight:500}
+.dl-btn:hover{background:rgba(14,143,152,.22);color:#fff}
+.dl-btn svg{width:14px;height:14px;fill:currentColor}
+
+/* CHAT PANEL */
+.cfab{position:fixed;bottom:28px;right:28px;z-index:700;width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,var(--te),var(--tm));border:none;cursor:pointer;box-shadow:0 8px 32px rgba(14,143,152,.6);display:flex;align-items:center;justify-content:center;transition:all .3s}
+.cfab:hover{transform:scale(1.1);box-shadow:0 14px 46px rgba(14,143,152,.8)}
+.cfab svg{width:26px;height:26px;fill:#fff}
+.cdot{position:absolute;top:-2px;right:-2px;width:13px;height:13px;border-radius:50%;background:#22c55e;border:2px solid var(--bg);animation:bk 2s ease-in-out infinite}
+.cpanel{position:fixed;bottom:0;right:28px;z-index:690;width:420px;height:80vh;max-height:680px;background:linear-gradient(180deg,#08101e,#0c1a34);border:1px solid rgba(14,143,152,.28);border-bottom:none;border-radius:20px 20px 0 0;display:flex;flex-direction:column;overflow:hidden;transform:translateY(110%);transition:transform .42s cubic-bezier(.16,1,.3,1);box-shadow:0 -10px 60px rgba(0,0,0,.75)}
+.cpanel::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--tm),transparent)}
+.cpanel.open{transform:translateY(0)}
+.cphd{background:rgba(5,9,22,.96);padding:13px 16px;display:flex;align-items:center;gap:11px;border-bottom:1px solid rgba(14,143,152,.14);flex-shrink:0}
+.cpav{width:37px;height:37px;border-radius:50%;background:linear-gradient(135deg,var(--te),var(--tm));display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;position:relative;flex-shrink:0;box-shadow:0 0 14px rgba(14,143,152,.4)}
+.cpav::after{content:"";position:absolute;bottom:1px;right:1px;width:9px;height:9px;background:#22c55e;border-radius:50%;border:2px solid #0c1a34}
+.cpnfo{flex:1}
+.cpnm{font-size:13px;font-weight:700;letter-spacing:.3px;font-family:var(--fs)}
+.cpst{font-size:10px;color:var(--tl)}
+.cpprv{font-size:9px;color:var(--dim);text-align:right;line-height:1.5}
+.cpprv strong{color:var(--tl)}
+.cpx{background:none;border:none;color:var(--mu);cursor:pointer;font-size:16px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.cpx:hover{background:rgba(255,255,255,.1);color:var(--w)}
+.cpmsgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px}
+.cpmsgs::-webkit-scrollbar{width:2px}
+.cpmsgs::-webkit-scrollbar-thumb{background:rgba(14,143,152,.3)}
+.cmsg{max-width:87%;padding:11px 14px;border-radius:15px;font-size:13px;line-height:1.58;animation:min .25s ease}
+@keyframes min{from{opacity:0;transform:scale(.95) translateY(5px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.nmsg{background:rgba(255,255,255,.06);color:rgba(240,244,255,.84);border-bottom-left-radius:3px;align-self:flex-start;border:1px solid rgba(14,143,152,.14)}
+.umsg{background:linear-gradient(135deg,var(--te),var(--tm));color:#fff;border-bottom-right-radius:3px;align-self:flex-end}
+.crsmsg{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.28);color:rgba(255,200,200,.9);align-self:flex-start;border-radius:14px;max-width:95%}
+.alrt{background:rgba(212,164,60,.08);border:1px solid rgba(212,164,60,.25);color:rgba(240,220,150,.9);align-self:flex-start;border-radius:14px;max-width:95%;padding:12px 14px}
+.tdots{display:none;align-self:flex-start;gap:4px;padding:11px 15px;background:rgba(255,255,255,.05);border:1px solid rgba(14,143,152,.14);border-radius:15px;border-bottom-left-radius:3px}
+.tdots span{width:5px;height:5px;border-radius:50%;background:var(--tm);animation:tb .9s ease-in-out infinite}
+.tdots span:nth-child(2){animation-delay:.15s}
+.tdots span:nth-child(3){animation-delay:.3s}
+@keyframes tb{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.cpft{border-top:1px solid rgba(14,143,152,.12);padding:11px;flex-shrink:0;background:rgba(3,6,18,.8)}
+.cpqks{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
+.cpqk{background:rgba(14,143,152,.1);border:1px solid rgba(14,143,152,.2);border-radius:16px;padding:4px 10px;font-size:11px;color:rgba(110,230,238,.75);cursor:pointer;transition:all .2s;font-family:var(--fb)}
+.cpqk:hover{background:rgba(14,143,152,.22);color:#fff}
+.cprow{display:flex;gap:7px;margin-bottom:7px}
+.cpinp{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(14,143,152,.2);border-radius:11px;padding:10px 13px;color:var(--w);font-family:var(--fb);font-size:13px;outline:none;transition:border-color .2s;resize:none;height:41px;overflow:hidden}
+.cpinp::placeholder{color:var(--dim)}
+.cpinp:focus{border-color:rgba(14,143,152,.52)}
+.cpsnd{background:var(--te);border:none;border-radius:11px;padding:10px 16px;color:#fff;cursor:pointer;font-size:16px;transition:all .2s;flex-shrink:0}
+.cpsnd:hover{background:var(--tm);transform:scale(1.07)}
+.cpcrs{width:100%;background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.24);border-radius:10px;padding:9px;color:#f87171;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--fb);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s}
+.cpcrs:hover{background:rgba(192,57,43,.2);color:#fff}
+.demo-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(212,164,60,.1);border:1px solid rgba(212,164,60,.25);border-radius:20px;padding:4px 12px;font-size:10px;color:var(--go);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;font-family:var(--fb)}
+
+/* CRISIS BAR */
+.cbar{background:rgba(14,143,152,.07);border-top:1px solid rgba(14,143,152,.14);padding:13px 40px;text-align:center;position:relative;z-index:2}
+.ctxt{font-size:12px;color:var(--mu)}
+.ctxt a{color:rgba(14,143,152,.7);text-decoration:none;transition:color .2s}
+.ctxt a:hover{color:var(--tl)}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(255,255,255,.05);padding:34px 40px;text-align:center;position:relative;z-index:2;background:var(--bg)}
+.ftxt{font-size:11px;color:var(--dim);line-height:2;font-weight:300}
+.flangs{display:flex;justify-content:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.flang{font-size:9px;letter-spacing:2px;color:rgba(14,143,152,.42);padding:3px 12px;border:1px solid rgba(14,143,152,.2);border-radius:18px;text-transform:uppercase}
+.fndlnk{display:inline-flex;align-items:center;gap:5px;margin-top:16px;padding:6px 14px;border:1px solid rgba(14,143,152,.14);border-radius:18px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(14,143,152,.35);cursor:pointer;background:none;transition:all .3s;font-family:var(--fs)}
+.fndlnk:hover{border-color:rgba(14,143,152,.4);color:var(--tl)}
+.fndlnk svg{width:10px;height:10px;fill:currentColor}
+
+@keyframes bk{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .g2,.g3,.mgrid,.krow{grid-template-columns:1fr}
+  .pgrid{grid-template-columns:1fr 1fr}
+  .sstrip{grid-template-columns:1fr 1fr}
+  nav{padding:0 16px}
+  .nlinks a:not(.ncta){display:none}
+  .sec,.dbody{padding:64px 16px}
+  .pvb,.cbar{padding:8px 16px}
+  .cpanel{width:100%;right:0;border-radius:18px 18px 0 0}
+}
+@media(max-width:500px){
+  .pgrid,.sstrip{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="aur"><div class="a1"></div><div class="a2"></div><div class="a3"></div></div>
+<canvas id="bg"></canvas>
+<div class="grid"></div>
+
+<!-- QUICK EXIT -->
+<button class="qx" onclick="qE()">&#10005; Quick Exit</button>
+
+<!-- PASSWORD MODAL -->
+<div class="pwov" id="pwov">
+  <div class="pwbox">
+    <button class="pwcls" onclick="closePw()">&#10005;</button>
+    <div class="pwico">&#128274;</div>
+    <h2 class="pwtit">Foundation Access</h2>
+    <p class="pwsub">Restricted to<br><strong>Burnett Foundation Aotearoa</strong> staff.<br>Enter your access code.</p>
+    <input class="pwinp" type="password" id="pwF" placeholder="Access code" onkeydown="if(event.key==='Enter')chkPw()">
+    <button class="pwbtn" onclick="chkPw()">Access Impact Dashboard &#8594;</button>
+    <div class="pwerr" id="pwErr">Incorrect code. Please try again.</div>
+    <p class="pwnote">Aggregate anonymised data only. No personal information.<br>nova@burnettnz.co.nz</p>
+  </div>
+</div>
+
+<!-- MOMENT MODAL -->
+<div class="mmodov" id="mmodov" onclick="closeMmod(event)">
+  <div class="mmodbox">
+    <div class="mmod-stripe" id="mmod-stripe"></div>
+    <button class="mmodcls" onclick="closeMmod(null,true)">&#10005;</button>
+    <div class="mmod-scroll">
+      <div class="mmod-top">
+        <div class="mmod-num" id="mn"></div>
+        <div class="mmod-titles">
+          <div class="mmod-tit" id="mt"></div>
+          <div class="mmod-es" id="mes"></div>
+          <div class="mmod-tag" id="mg"></div>
+        </div>
+      </div>
+      <div class="mmod-approach-lbl">NOVA&#8217;s approach</div>
+      <div class="mmod-quote" id="mq" style="border-color:var(--tm)"></div>
+      <div class="mmod-body" id="mb"></div>
+      <div class="mmod-ex" id="me"></div>
+      <div class="mmod-cta">
+        <button class="mmod-btn" onclick="closeMmod(null,true);openChat()">Talk to NOVA &#10022;</button>
+        <button class="mmod-btn-ghost" onclick="closeMmod(null,true)">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nlogo" onclick="scroll(0,0)">
+    <div class="nstar">
+      <svg viewBox="0 0 30 30" fill="none">
+        <circle cx="15" cy="15" r="13" stroke="rgba(14,143,152,.3)" stroke-width="1"/>
+        <circle cx="15" cy="15" r="8" stroke="rgba(14,143,152,.55)" stroke-width="1"/>
+        <circle cx="15" cy="15" r="4" fill="rgba(14,143,152,.2)" stroke="#0E8F98" stroke-width="1.2"/>
+        <line x1="15" y1="2" x2="15" y2="7" stroke="#15B8C4" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="15" y1="23" x2="15" y2="28" stroke="#15B8C4" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="2" y1="15" x2="7" y2="15" stroke="#15B8C4" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="23" y1="15" x2="28" y2="15" stroke="#15B8C4" stroke-width="1.4" stroke-linecap="round"/>
+        <circle cx="15" cy="15" r="1.6" fill="#15B8C4"/>
+      </svg>
+    </div>
+    <span class="nname">M&#257;t<span>auranga</span> NOVA</span>
+  </div>
+  <div class="nlinks">
+    <a onclick="document.getElementById('sec-mom').scrollIntoView({behavior:'smooth'})">Moments</a>
+    <a onclick="document.getElementById('sec-pil').scrollIntoView({behavior:'smooth'})">Pillars</a>
+    <a class="ncta" onclick="openChat()">Talk to NOVA &#10022;</a>
+    <button class="flock" onclick="openPw()">
+      <svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v14h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 0 1 1 3.732V18h-2v-2.268A2 2 0 0 1 12 12z"/></svg>
+      Foundation
+    </button>
+  </div>
+</nav>
+
+<!-- BANNER -->
+<div class="pvb">
+  <div class="pvdot"></div>
+  <p class="pvtxt"><strong>Demo version.</strong> &nbsp;No real data stored. Responses are simulated for demonstration purposes.</p>
+</div>
+
+<!-- CHAT FAB -->
+<button class="cfab" id="cfab" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+  <div class="cdot"></div>
+</button>
+
+<!-- CHAT PANEL -->
+<div class="cpanel" id="cpanel">
+  <div class="cphd">
+    <div class="cpav">&#10022;</div>
+    <div class="cpnfo">
+      <div class="cpnm">NOVA <span style="font-size:9px;letter-spacing:2px;color:rgba(110,230,238,.5);font-weight:400">DEMO</span></div>
+      <div class="cpst" id="cpSt">Online &#183; Here to listen</div>
+    </div>
+    <div class="cpprv">&#128274; <strong>Private</strong><br>Nothing stored</div>
+    <button class="cpx" onclick="toggleChat()">&#10005;</button>
+  </div>
+  <div class="cpmsgs" id="cpMsgs">
+    <div class="tdots" id="tdots"><span></span><span></span><span></span></div>
+  </div>
+  <div class="cpft">
+    <div class="demo-badge">&#128262; Demo mode &nbsp;&#183;&nbsp; Simulated NOVA responses</div>
+    <div class="cpqks">
+      <button class="cpqk" onclick="sQ('I just found out I have HIV')">New diagnosis</button>
+      <button class="cpqk" onclick="sQ('Tengo miedo al estigma')">Estigma</button>
+      <button class="cpqk" onclick="sQ('What is U=U?')">U=U</button>
+      <button class="cpqk" onclick="sQ('I saw hate about HIV online')">Online hate</button>
+      <button class="cpqk" onclick="sQ('Me siento muy solo')">Me siento solo</button>
+      <button class="cpqk" onclick="sQ('No puedo m&#225;s con esto')">Crisis signal</button>
+    </div>
+    <div class="cprow">
+      <textarea class="cpinp" id="cpInp" placeholder="Write in your language..." rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sMsg()}"
+        oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,88)+'px'"></textarea>
+      <button class="cpsnd" onclick="sMsg()">&#8594;</button>
+    </div>
+    <button class="cpcrs" onclick="showCrisis()">&#10084; I need to speak to a real person now</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <p class="hero-eyebrow">Aotearoa New Zealand &#183; 2026 &#183; Burnett Foundation Innovation Challenge</p>
+
+  <div class="nsym">
+    <div class="or or1" style="transform:translate(-50%,-50%)"><div class="odot"></div></div>
+    <div class="or or2" style="transform:translate(-50%,-50%)"><div class="odot"></div></div>
+    <div class="or or3" style="transform:translate(-50%,-50%)"></div>
+    <svg viewBox="0 0 120 120" fill="none">
+      <circle cx="60" cy="60" r="54" stroke="rgba(14,143,152,.18)" stroke-width="1"/>
+      <circle cx="60" cy="60" r="40" stroke="rgba(14,143,152,.48)" stroke-width="1.2"/>
+      <circle cx="60" cy="60" r="24" fill="rgba(14,143,152,.14)" stroke="#0E8F98" stroke-width="1.8"/>
+      <line x1="60" y1="6" x2="60" y2="22" stroke="#15B8C4" stroke-width="2" stroke-linecap="round"/>
+      <line x1="60" y1="98" x2="60" y2="114" stroke="#15B8C4" stroke-width="2" stroke-linecap="round"/>
+      <line x1="6" y1="60" x2="22" y2="60" stroke="#15B8C4" stroke-width="2" stroke-linecap="round"/>
+      <line x1="98" y1="60" x2="114" y2="60" stroke="#15B8C4" stroke-width="2" stroke-linecap="round"/>
+      <line x1="24" y1="24" x2="34" y2="34" stroke="rgba(21,184,196,.5)" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="86" y1="86" x2="96" y2="96" stroke="rgba(21,184,196,.5)" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="96" y1="24" x2="86" y2="34" stroke="rgba(21,184,196,.5)" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="24" y1="96" x2="34" y2="86" stroke="rgba(21,184,196,.5)" stroke-width="1.2" stroke-linecap="round"/>
+      <circle cx="60" cy="60" r="5.5" fill="#15B8C4">
+        <animate attributeName="r" values="5.5;8;5.5" dur="2.4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="60" cy="22" r="2.4" fill="rgba(21,184,196,.75)"/>
+      <circle cx="60" cy="98" r="2.4" fill="rgba(21,184,196,.75)"/>
+      <circle cx="22" cy="60" r="2.4" fill="rgba(21,184,196,.75)"/>
+      <circle cx="98" cy="60" r="2.4" fill="rgba(21,184,196,.75)"/>
+    </svg>
+  </div>
+
+  <h1 class="htit">NOVA</h1>
+  <p class="hsub">&#8220;El Amigo que Ya Pas&#243; por Esto&#8221;</p>
+  <p class="htag">Digital HIV Companion &#183; Knowledge is Power &#183; El Conocimiento es Poder</p>
+
+  <div class="pcard">
+    <div class="pitems">
+      <div class="pi"><div class="pck">&#10003;</div><span>Everything here is completely private &#8212; nothing is stored, nothing goes anywhere</span></div>
+      <div class="pi"><div class="pck">&#10003;</div><span>No account. No registration. No data collected.</span></div>
+      <div class="pi"><div class="pck">&#10003;</div><span>Use <strong style="color:#EF5350">Quick Exit</strong> to leave instantly at any time</span></div>
+      <div class="pi"><div class="pck">&#10003;</div><span>Write in any language &#8212; English, Espa&#241;ol, Te Reo M&#257;ori, or any other</span></div>
+    </div>
+  </div>
+
+  <div class="btns">
+    <button class="btnp" onclick="openChat()">Start talking to NOVA &nbsp;&#10022;</button>
+    <button class="btng" onclick="openChat()">Hablar con NOVA &#183; Te k&#333;rero ki a NOVA &#8594;</button>
+    <p class="ctan">No registration &#183; Completely anonymous &#183; Available 24/7</p>
+  </div>
+
+  <div class="sstrip">
+    <div class="ssi"><div class="ssv">39.9M</div><div class="ssl">people living with HIV globally</div><div class="sss">UNAIDS 2025</div></div>
+    <div class="ssi"><div class="ssv">40%</div><div class="ssl">fall in new infections since 2010</div><div class="sss">UNAIDS 2025</div></div>
+    <div class="ssi"><div class="ssv">95</div><div class="ssl">NZ cases 2024 &#8212; lowest ever recorded</div><div class="sss">NZ HIV Monitoring 2025</div></div>
+    <div class="ssi"><div class="ssv">U=U</div><div class="ssl">Undetectable = Untransmittable. Confirmed science.</div><div class="sss">WHO 2025</div></div>
+  </div>
+</section>
+
+<hr class="dv">
+
+<!-- MOMENTS -->
+<section class="sec mbg" id="sec-mom">
+  <div class="inn ctr">
+    <p class="slbl">The 6 Real Moments</p>
+    <h2 class="stit">Six real moments. One companion.</h2>
+    <p class="ssub">NOVA is built around the lived experience of HIV &#8212; not FAQ pages. Each moment is a real place where people need more than information.</p>
+    <div class="mgrid" id="mgrid"></div>
+  </div>
+</section>
+
+<hr class="dv">
+
+<!-- PILLARS -->
+<section class="pbg" id="sec-pil">
+  <div class="pgrid" id="pgrid"></div>
+</section>
+
+<hr class="dv">
+
+<!-- DASHBOARD TRIGGER -->
+<div class="cbar" style="border-top:none;border-bottom:1px solid rgba(14,143,152,.14)">
+  <p class="ctxt">
+    <button class="fndlnk" onclick="openPw()" style="display:inline-flex">
+      <svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v14h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 0 1 1 3.732V18h-2v-2.268A2 2 0 0 1 12 12z"/></svg>
+      Burnett Foundation &#8212; Impact Analytics Dashboard
+    </button>
+    &nbsp;&nbsp;<span style="color:var(--dim)">Password protected &#183; burnett2026</span>
+  </p>
+</div>
+
+<!-- DASHBOARD -->
+<div id="pdash">
+  <div class="abar">
+    <div class="abadge"><span class="adot"></span>&#127973; Burnett Foundation Aotearoa &#8212; Impact Dashboard &#183; Authorised Access</div>
+    <button class="aout" onclick="logOut()">&#10005; Lock Dashboard</button>
+  </div>
+  <div class="dbody"><div class="dinn">
+    <p class="slbl ctr">Impact Analytics &#8212; Burnett Foundation View</p>
+    <h2 class="stit ctr" style="margin-bottom:10px">How NOVA measures stigma reduction.<br>Without storing anything.</h2>
+    <p class="ssub ctr" style="margin:0 auto 40px">All metrics are anonymous aggregated event patterns &#8212; zero personal data collected. Data based on NZ HIV Monitoring Report 2025 + UNAIDS 2025.</p>
+    <div class="ddiscl"><strong>Demo data.</strong> Representative based on NZ HIV epidemiological patterns. Live data via PostHog after August 2026 launch.</div>
+
+    <div class="dl-all">
+      <span style="font-size:12px;color:var(--mu);font-weight:500">Download data:</span>
+      <button class="dl-btn" onclick="dlCSV('stigma')"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Stigma Data CSV</button>
+      <button class="dl-btn" onclick="dlCSV('prep')"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>PrEP Awareness CSV</button>
+      <button class="dl-btn" onclick="dlCSV('trend')"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>8-Week Trend CSV</button>
+      <button class="dl-btn" onclick="dlCSV('kpi')"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>KPI Summary CSV</button>
+    </div>
+
+    <div class="krow">
+      <div class="kc"><div class="kv" id="k1">0</div><div class="kl">Sessions this month</div></div>
+      <div class="kc"><div class="kv" id="k2">0</div><div class="kl">% sessions with actionable step</div></div>
+      <div class="kc"><div class="kv" id="k3">0</div><div class="kl">% users felt less alone</div></div>
+      <div class="kc"><div class="kv" id="k4">0</div><div class="kl">Crisis protocol activations</div></div>
+      <div class="kc"><div class="kv" id="k5">0</div><div class="kl">% sessions in Spanish</div></div>
+    </div>
+
+    <div class="g2">
+      <div class="dcard dtl">
+        <button class="ddl" onclick="dlCSV('map')">&#8595; CSV</button>
+        <div class="dtit">Geographic Reach &#8212; Aotearoa NZ</div>
+        <div class="dsub">Sessions by region &#183; Circle = volume &#183; Colour = stigma signal intensity</div>
+        <div class="nmw">
+          <svg class="nsvg" viewBox="0 0 400 600" fill="none">
+            <path d="M220,80 L240,100 L260,130 L280,160 L290,190 L285,220 L275,240 L260,255 L245,265 L230,275 L215,285 L200,295 L185,305 L175,320 L170,340 L175,360 L185,375 L195,385 L200,395 L195,405 L185,410 L175,405 L165,395 L158,380 L155,365 L158,350 L165,335 L168,320 L165,305 L155,295 L145,285 L138,275 L135,265 L138,255 L145,245 L155,235 L165,225 L170,215 L168,200 L162,185 L158,170 L160,155 L168,140 L178,125 L190,110 L205,95 Z" fill="rgba(14,143,152,.08)" stroke="rgba(14,143,152,.3)" stroke-width="1.5"/>
+            <path d="M155,430 L170,420 L185,415 L200,418 L215,425 L228,435 L238,450 L242,468 L240,488 L232,505 L220,518 L205,528 L190,532 L175,530 L162,522 L152,510 L146,495 L144,478 L148,462 L155,448 Z" fill="rgba(14,143,152,.08)" stroke="rgba(14,143,152,.3)" stroke-width="1.5"/>
+            <path d="M175,545 L185,540 L192,548 L188,558 L178,560 L172,553 Z" fill="rgba(14,143,152,.05)" stroke="rgba(14,143,152,.2)"/>
+            <g class="rdot" data-r="Auckland" data-s="342 sessions" data-sg="Stigma: High" data-p="PrEP awareness: 68%">
+              <circle cx="195" cy="155" r="18" fill="rgba(192,57,43,.2)" stroke="#E74C3C" stroke-width="1.5"/>
+              <circle cx="195" cy="155" r="10" fill="rgba(192,57,43,.36)"/>
+              <circle cx="195" cy="155" r="4" fill="#E74C3C"/>
+              <text x="195" y="140" text-anchor="middle" font-family="DM Sans" font-size="10" fill="rgba(255,255,255,.6)">Auckland</text>
+            </g>
+            <g class="rdot" data-r="Wellington" data-s="124 sessions" data-sg="Stigma: Medium" data-p="PrEP awareness: 71%">
+              <circle cx="185" cy="370" r="12" fill="rgba(212,164,60,.2)" stroke="#D4A43C" stroke-width="1.5"/>
+              <circle cx="185" cy="370" r="7" fill="rgba(212,164,60,.36)"/>
+              <circle cx="185" cy="370" r="3" fill="#D4A43C"/>
+              <text x="207" y="374" font-family="DM Sans" font-size="9" fill="rgba(255,255,255,.5)">Wellington</text>
+            </g>
+            <g class="rdot" data-r="Christchurch" data-s="98 sessions" data-sg="Stigma: Medium" data-p="PrEP awareness: 65%">
+              <circle cx="205" cy="475" r="11" fill="rgba(14,143,152,.2)" stroke="#0E8F98" stroke-width="1.5"/>
+              <circle cx="205" cy="475" r="6" fill="rgba(14,143,152,.36)"/>
+              <circle cx="205" cy="475" r="3" fill="#0E8F98"/>
+              <text x="222" y="479" font-family="DM Sans" font-size="9" fill="rgba(255,255,255,.5)">Christchurch</text>
+            </g>
+            <g class="rdot" data-r="Waikato/Hamilton" data-s="67 sessions" data-sg="Stigma: Medium-High" data-p="PrEP awareness: 58%">
+              <circle cx="188" cy="220" r="10" fill="rgba(212,164,60,.18)" stroke="#D4A43C"/>
+              <circle cx="188" cy="220" r="5" fill="rgba(212,164,60,.3)"/>
+              <text x="206" y="224" font-family="DM Sans" font-size="9" fill="rgba(255,255,255,.42)">Waikato</text>
+            </g>
+            <g class="rdot" data-r="Northland (Rural)" data-s="28 sessions" data-sg="Stigma: Very High" data-p="PrEP awareness: 31%">
+              <circle cx="210" cy="105" r="8" fill="rgba(192,57,43,.14)" stroke="#E74C3C"/>
+              <circle cx="210" cy="105" r="4" fill="rgba(192,57,43,.27)"/>
+              <text x="228" y="108" font-family="DM Sans" font-size="9" fill="rgba(255,255,255,.4)">Northland</text>
+            </g>
+            <g class="rdot" data-r="Otago/Dunedin" data-s="52 sessions" data-sg="Stigma: Medium" data-p="PrEP awareness: 60%">
+              <circle cx="198" cy="518" r="9" fill="rgba(14,143,152,.16)" stroke="#0E8F98"/>
+              <circle cx="198" cy="518" r="4.5" fill="rgba(14,143,152,.27)"/>
+              <text x="214" y="521" font-family="DM Sans" font-size="9" fill="rgba(255,255,255,.4)">Dunedin</text>
+            </g>
+            <g transform="translate(15,530)">
+              <text font-family="DM Sans" font-size="9" fill="rgba(255,255,255,.3)">Stigma Signal</text>
+              <circle cx="7" cy="14" r="4" fill="rgba(192,57,43,.38)" stroke="#E74C3C" stroke-width="1"/><text font-family="DM Sans" font-size="8" fill="rgba(255,255,255,.25)" x="15" y="17">High</text>
+              <circle cx="7" cy="28" r="4" fill="rgba(212,164,60,.38)" stroke="#D4A43C" stroke-width="1"/><text font-family="DM Sans" font-size="8" fill="rgba(255,255,255,.25)" x="15" y="31">Medium</text>
+              <circle cx="7" cy="42" r="4" fill="rgba(14,143,152,.38)" stroke="#0E8F98" stroke-width="1"/><text font-family="DM Sans" font-size="8" fill="rgba(255,255,255,.25)" x="15" y="45">Lower</text>
+            </g>
+          </svg>
+          <div class="mtt" id="mtt"><div class="mtt-t" id="mttr"></div><div class="mtt-s" id="mttc"></div></div>
+        </div>
+      </div>
+      <div class="dcard dgo">
+        <button class="ddl" onclick="dlCSV('stigma')">&#8595; CSV</button>
+        <div class="dtit">Stigma Signal Score by Community</div>
+        <div class="dsub">Average session intensity &#183; Scale 1&#8211;5 (higher = more acute stigma)</div>
+        <div class="sbars" id="sbars"></div>
+      </div>
+    </div>
+
+    <div class="g3">
+      <div class="dcard dtl">
+        <button class="ddl" onclick="dlCSV('age')">&#8595; CSV</button>
+        <div class="dtit">Age Distribution</div>
+        <div class="dsub">Sessions by estimated age group</div>
+        <div class="cw"><canvas id="cAge"></canvas></div>
+      </div>
+      <div class="dcard dpu">
+        <button class="ddl" onclick="dlCSV('lang')">&#8595; CSV</button>
+        <div class="dtit">Language Distribution</div>
+        <div class="dsub">Session language breakdown</div>
+        <div class="cw"><canvas id="cLang"></canvas></div>
+      </div>
+      <div class="dcard dgo">
+        <button class="ddl" onclick="dlCSV('moments')">&#8595; CSV</button>
+        <div class="dtit">6 Moments Frequency</div>
+        <div class="dsub">Which moments users experience most</div>
+        <div class="cw"><canvas id="cMom"></canvas></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="dcard dgd">
+        <button class="ddl" onclick="dlCSV('prep')">&#8595; CSV</button>
+        <div class="dtit">PrEP &amp; Antiviral Awareness by Community</div>
+        <div class="dsub">% showing knowledge of prevention &amp; treatment options &#183; NZ HIV Monitoring 2025</div>
+        <div class="cw"><canvas id="cPrep"></canvas></div>
+      </div>
+      <div class="dcard dpk">
+        <button class="ddl" onclick="dlCSV('misinfo')">&#8595; CSV</button>
+        <div class="dtit">Online Stigma Reports &#8212; Moment 6</div>
+        <div class="dsub">Type of harmful digital content encountered</div>
+        <div class="cw"><canvas id="cMis"></canvas></div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="dcard drd">
+        <button class="ddl" onclick="dlCSV('trend')">&#8595; CSV</button>
+        <div class="dtit">Stigma Signal Trend &#8212; 8-Week Prototype Period</div>
+        <div class="dsub">Avg weekly stigma score (red &#8595; = NOVA reducing stigma) vs session completion rate (green &#8593;)</div>
+        <div class="cw-t"><canvas id="cTrend"></canvas></div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<div class="cbar">
+  <p class="ctxt">In crisis right now &#8212; <a href="tel:0800543354">Lifeline 0800 543 354</a> &#183; <a href="sms:1737">Text 1737</a> &#183; <a href="https://burnettnz.co.nz" target="_blank">Burnett Foundation NZ</a> &#183; Emergency 111</p>
+</div>
+
+<footer>
+  <p class="ftxt">NOVA &#8212; Digital HIV Companion &#183; Aotearoa New Zealand &#183; 2026<br>Created by Emanuel Figueroa &#183; Living with HIV since 2011 &#183; Auckland<br><span style="font-size:10px;opacity:.45">Educational tool only. Does not replace medical or mental health care. Hosted on Catalyst Cloud NZ.</span></p>
+  <div class="flangs"><span class="flang">English</span><span class="flang">Espa&#241;ol</span><span class="flang">Te Reo M&#257;ori</span><span class="flang">&amp; more</span></div>
+  <button class="fndlnk" onclick="openPw()">
+    <svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v14h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 0 1 1 3.732V18h-2v-2.268A2 2 0 0 1 12 12z"/></svg>
+    Burnett Foundation Dashboard
+  </button>
+</footer>
+
+<script>
+/* ═══ STARS ═══ */
+(function(){
+  var cv=document.getElementById('bg'),ctx=cv.getContext('2d'),W,H,st=[];
+  function init(){W=cv.width=innerWidth;H=cv.height=innerHeight;st=[];for(var i=0;i<140;i++)st.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,o:Math.random()*.55+.1,s:Math.random()*.3+.04,t:Math.random()*Math.PI*2,dx:Math.random()*.07-.035});}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    [[W*.5,H*.08,280,'rgba(14,143,152,.04)'],[W*.8,H*.5,150,'rgba(21,184,196,.03)'],[W*.18,H*.72,180,'rgba(90,103,216,.03)']].forEach(function(a){var g=ctx.createRadialGradient(a[0],a[1],0,a[0],a[1],a[2]);g.addColorStop(0,a[3]);g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);});
+    st.forEach(function(s){s.t+=s.s*.015;s.x+=s.dx;if(s.x>W)s.x=0;if(s.x<0)s.x=W;var o=s.o*(.5+.5*Math.sin(s.t));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(180,210,255,'+o+')';ctx.fill();});
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',init);init();draw();
+})();
+
+/* ═══ QUICK EXIT ═══ */
+function qE(){window.location.replace('https://www.google.com');}
+
+/* ═══ THE 6 REAL MOMENTS — V7 ═══ */
+var MOMENT_COLORS=['#E74C3C','#D4A43C','#0E8F98','#5A67D8','#28A652','#E74C8B'];
+
+var MOMENTS=[
+  {
+    n:'01', m:'1',
+    tag:'Shock · Crisis',
+    tit:'New Diagnosis',
+    es:'Reci&#233;n diagnosticado',
+    quote:'&#8220;Eh. Respir&#225;. Esto es solo informaci&#243;n, no una sentencia sobre tu vida.&#8221;',
+    approach:'Containment first — not information. Let the person process. Ask what is resonating loudest right now.',
+    dsc:'Someone just found out they have HIV. They may be terrified, numb, or flooded with questions. NOVA doesn\'t lead with facts or resources. The first job is to hold the space and help them breathe.',
+    ex:'<div class="mmod-ex-lbl">How NOVA responds</div><div class="mmod-ex-msg">User: &ldquo;I just got my results. I have HIV. I don\'t know what to do.&rdquo;<br><br>NOVA: &ldquo;Eh. Take a breath. You just got some information &mdash; that\'s all a diagnosis is right now. I know that doesn\'t feel small. What\'s the loudest thing for you in this moment?&rdquo;</div>'
+  },
+  {
+    n:'02', m:'2',
+    tag:'Privacy · Decision',
+    tit:'Disclosure Decision',
+    es:'La decisi&#243;n de contar',
+    quote:'&#8220;Esa decisi&#243;n es totalmente tuya. Nadie puede apurarte.&#8221;',
+    approach:'Help them think it through — without advising what to do. The decision of when, how, and to whom belongs entirely to the person.',
+    dsc:'The person is deciding who to tell, when, and how. They may be under pressure from a partner, family, or healthcare provider. NOVA helps them think it through &#8212; without advising what to do.',
+    ex:'<div class="mmod-ex-lbl">How NOVA responds</div><div class="mmod-ex-msg">User: &ldquo;My partner is pressuring me to tell my family but I\'m not ready.&rdquo;<br><br>NOVA: &ldquo;That\'s your call. Not theirs, not your family\'s &mdash; yours. The right moment is the one you choose. What\'s making you feel not ready yet?&rdquo;</div>'
+  },
+  {
+    n:'03', m:'3',
+    tag:'Identity · Stigma',
+    tit:'Internal Stigma',
+    es:'Estigma interno',
+    quote:'&#8220;El VIH es algo que ten&#233;s. No es lo que sos.&#8221;',
+    approach:'Challenge internalized stigma firmly but with care. HIV is something they have — not what they are.',
+    dsc:'The person has started believing the stigma about themselves. They may feel dirty, broken, unlovable, or defined by their diagnosis. NOVA challenges this firmly but with care &#8212; without dismissing the pain.',
+    ex:'<div class="mmod-ex-lbl">How NOVA responds</div><div class="mmod-ex-msg">User: &ldquo;I feel like damaged goods now. Who\'s going to want to be with someone like me?&rdquo;<br><br>NOVA: &ldquo;HIV is something you have. It\'s not what you are &mdash; and it\'s not a verdict on your worth or who you can love. That feeling you\'re describing is stigma talking, not reality. Can I ask &mdash; where do you think that voice is coming from?&rdquo;</div>'
+  },
+  {
+    n:'04', m:'4',
+    tag:'Discrimination · Rights',
+    tit:'Facing Discrimination',
+    es:'Discriminaci&#243;n',
+    quote:'&#8220;Eso no est&#225; bien &mdash; y tampoco es legal.&#8221;',
+    approach:'Validate first. Then empower. The NZ Human Rights Act 1993 protects against discrimination based on health status. For online hate: Netsafe NZ.',
+    dsc:'The person experienced rejection, judgment, or discrimination &#8212; at work, from friends, family, or in the health system. NOVA validates the experience first, then gives them real tools and rights.',
+    ex:'<div class="mmod-ex-lbl">How NOVA responds</div><div class="mmod-ex-msg">User: &ldquo;My employer found out and I think I\'m being pushed out.&rdquo;<br><br>NOVA: &ldquo;That\'s not okay &mdash; and it\'s also not legal. The Human Rights Act 1993 in NZ protects you from discrimination based on health status. What happened exactly?&rdquo;</div>'
+  },
+  {
+    n:'05', m:'5',
+    tag:'Resilience · Daily life',
+    tit:'Living Long-Term with HIV',
+    es:'Vida cotidiana con VIH',
+    quote:'&#8220;Un mal d&#237;a no dice nada sobre vos. Solo significa que hoy fue heavy.&#8221;',
+    approach:'Normalize without inflating. Validate fatigue without catastrophizing. A bad day is not a verdict.',
+    dsc:'The person has been living with HIV for a while and is navigating the day-to-day reality &#8212; relationships, adherence, mental health, intimacy. NOVA normalizes without minimizing, and encourages without toxic positivity.',
+    ex:'<div class="mmod-ex-lbl">How NOVA responds</div><div class="mmod-ex-msg">User: &ldquo;It\'s been two years and some days I just get really tired of it all.&rdquo;<br><br>NOVA: &ldquo;Yeah. That\'s real &mdash; it doesn\'t mean anything went wrong. A bad day doesn\'t tell you anything about you. Just means today was heavy. What\'s been the hardest part lately?&rdquo;</div>'
+  },
+  {
+    n:'06', m:'6',
+    tag:'Online hate · Digital',
+    tit:'Digital Stigma &amp; Online Hate',
+    es:'Estigma digital',
+    quote:'&#8220;Lo que viste no estuvo bien. Ese odio viene de la ignorancia.&#8221;',
+    approach:'Validate first. Explain where the hate comes from. Give concrete NZ action pathways: Netsafe NZ or Human Rights Commission.',
+    dsc:'The person encountered harmful, hateful, or stigmatizing content about HIV online. This moment is growing rapidly. NOVA validates the impact, explains why the hate exists, and gives concrete action pathways.',
+    ex:'<div class="mmod-ex-lbl">How NOVA responds</div><div class="mmod-ex-msg">User: &ldquo;I saw a TikTok mocking people with HIV. It really got to me.&rdquo;<br><br>NOVA: &ldquo;What you saw wasn\'t okay. That kind of content comes from ignorance &mdash; people who\'ve never actually met someone living with HIV. That doesn\'t make it hurt less. Do you want to report it? Netsafe NZ (netsafe.org.nz) handles this &mdash; they keep a formal record.&rdquo;</div>'
+  }
+];
+
+var PILLARS=[
+  {n:'1',tit:'Just a Diagnosis',es:'Solo un diagn&#243;stico',dsc:'HIV is a medical condition, like any other. It does not define the person, erase their dreams, or determine their worth. A diagnosis is information &#8212; not a sentence.'},
+  {n:'2',tit:'Knowledge is Power',es:'El conocimiento es poder',dsc:'Education is the only real weapon against stigma. Those who understand HIV do not fear it. Those who fear it, discriminate. Every conversation with NOVA is an act of empowerment.'},
+  {n:'3',tit:'The Body is an Ally',es:'El cuerpo es aliado',dsc:'U=U: Undetectable = Untransmittable &#8212; confirmed science. A well-cared-for body supports the mind. Treatment today means living a full, long life.'},
+  {n:'4',tit:'Silence is Power',es:'El silencio es poder',dsc:'No one can force disclosure. Withdrawal with dignity is not weakness &#8212; it is emotional intelligence. The decision of when, how, and to whom to disclose belongs entirely to the person.'},
+  {n:'5',tit:'Resilience is the Key',es:'La resiliencia es la llave',dsc:'A bad day is not the end. A bad week is not a verdict. Resilience is the door to success in one\'s own life. No one walks this alone &#8212; NOVA is here.'},
+];
+
+/* Build moments grid */
+var mg=document.getElementById('mgrid');
+MOMENTS.forEach(function(m,i){
+  var d=document.createElement('div');
+  d.className='mcard';
+  d.setAttribute('data-m',m.m);
+  d.innerHTML=
+    '<div class="mcrd-head">'+
+      '<div class="mnum">MOMENT '+m.n+'</div>'+
+      '<div class="mtag">'+m.tag+'</div>'+
+      '<div class="mtit">'+m.tit+'</div>'+
+      '<div class="mes">'+m.es+'</div>'+
+    '</div>'+
+    '<div class="mcrd-body">'+
+      '<div class="mquote">'+m.quote+'</div>'+
+      '<div class="mdsc">'+m.dsc+'</div>'+
+    '</div>'+
+    '<div class="mcrd-foot">'+
+      '<div class="mmore">See NOVA example &#8594;</div>'+
+    '</div>';
+  d.onclick=function(){openMmod(i);};
+  mg.appendChild(d);
+});
+
+/* Build pillars */
+var pg=document.getElementById('pgrid');
+PILLARS.forEach(function(p){
+  var d=document.createElement('div');d.className='pilc';
+  d.innerHTML='<div class="pnum">'+p.n+'</div><div class="pen">'+p.tit+'</div><div class="pes">'+p.es+'</div><div class="pdsc">'+p.dsc+'</div>';
+  pg.appendChild(d);
+});
+
+/* Moment modal */
+var M_STRIPE_COLORS={
+  '1':'linear-gradient(90deg,transparent,#E74C3C,transparent)',
+  '2':'linear-gradient(90deg,transparent,#D4A43C,transparent)',
+  '3':'linear-gradient(90deg,transparent,#0E8F98,transparent)',
+  '4':'linear-gradient(90deg,transparent,#5A67D8,transparent)',
+  '5':'linear-gradient(90deg,transparent,#28A652,transparent)',
+  '6':'linear-gradient(90deg,transparent,#E74C8B,transparent)'
+};
+var M_QUOTE_COLORS={
+  '1':'rgba(231,76,60,.7)','2':'rgba(212,164,60,.7)','3':'rgba(14,143,152,.9)',
+  '4':'rgba(90,103,216,.7)','5':'rgba(40,166,82,.7)','6':'rgba(231,76,139,.7)'
+};
+
+function openMmod(i){
+  var m=MOMENTS[i];
+  document.getElementById('mmod-stripe').style.background=M_STRIPE_COLORS[m.m]||'linear-gradient(90deg,transparent,var(--tm),transparent)';
+  document.getElementById('mn').textContent=m.n;
+  document.getElementById('mn').style.color=MOMENT_COLORS[i]||'var(--tm)';
+  document.getElementById('mt').textContent=m.tit.replace(/&amp;/g,'&');
+  document.getElementById('mes').innerHTML=m.es;
+  document.getElementById('mg').textContent=m.tag;
+  document.getElementById('mg').style.color=MOMENT_COLORS[i]||'var(--tm)';
+  document.getElementById('mq').innerHTML=m.quote;
+  document.getElementById('mq').style.borderLeftColor=M_QUOTE_COLORS[m.m]||'var(--tm)';
+  document.getElementById('mq').style.color=M_QUOTE_COLORS[m.m]||'rgba(110,230,238,.75)';
+  document.getElementById('mb').innerHTML='<p style="margin-bottom:10px;font-weight:500;font-size:12px;color:rgba(240,244,255,.38);letter-spacing:1px;text-transform:uppercase">NOVA\'s approach</p>'+m.approach+'<br><br>'+m.dsc;
+  document.getElementById('me').innerHTML=m.ex;
+  document.getElementById('mmodov').classList.add('open');
+}
+function closeMmod(e,force){
+  if(force||!e||e.target===document.getElementById('mmodov'))
+    document.getElementById('mmodov').classList.remove('open');
+}
+
+/* ═══ PASSWORD ═══ */
+function openPw(){document.getElementById('pwov').classList.add('open');setTimeout(function(){document.getElementById('pwF').focus();},280);}
+function closePw(){document.getElementById('pwov').classList.remove('open');document.getElementById('pwF').value='';document.getElementById('pwErr').style.display='none';}
+document.getElementById('pwov').addEventListener('click',function(e){if(e.target===this)closePw();});
+function chkPw(){
+  var v=document.getElementById('pwF').value.trim().toLowerCase();
+  if(v==='burnett2026'){closePw();showDash();}
+  else{document.getElementById('pwErr').style.display='block';document.getElementById('pwF').value='';document.getElementById('pwF').focus();setTimeout(function(){document.getElementById('pwErr').style.display='none';},3000);}
+}
+
+/* ═══ DASHBOARD ═══ */
+var chartsBuilt=false;
+function showDash(){
+  var d=document.getElementById('pdash');
+  d.style.display='block';
+  d.style.animation='di .8s cubic-bezier(.16,1,.3,1) both';
+  setTimeout(function(){d.scrollIntoView({behavior:'smooth',block:'start'});},140);
+  if(!chartsBuilt){
+    setTimeout(function(){
+      buildCharts();
+      animKPI();
+      animBars();
+      chartsBuilt=true;
+    },600);
+  }
+}
+function logOut(){document.getElementById('pdash').style.display='none';window.scrollTo({top:0,behavior:'smooth'});}
+
+function animKPI(){
+  var kpis=[{id:'k1',t:847},{id:'k2',t:73,suf:'%'},{id:'k3',t:41,suf:'%'},{id:'k4',t:6},{id:'k5',t:38,suf:'%'}];
+  kpis.forEach(function(k){
+    var el=document.getElementById(k.id),t=k.t,c=0,s=t/60;
+    var tm=setInterval(function(){c=Math.min(c+s,t);el.textContent=Math.floor(c)+(k.suf||'');if(c>=t){el.textContent=t+(k.suf||'');clearInterval(tm);}},22);
+  });
+}
+
+var SDATA=[
+  {l:'New diagnosis',w:94,v:'4.7',c:'linear-gradient(90deg,#C0392B,#EF5350)'},
+  {l:'Online hate (M6)',w:90,v:'4.5',c:'linear-gradient(90deg,#C0392B,#EF5350)'},
+  {l:'Rural communities',w:86,v:'4.3',c:'linear-gradient(90deg,#D4A43C,#F0C96A)'},
+  {l:'Migrant communities',w:82,v:'4.1',c:'linear-gradient(90deg,#D4A43C,#F0C96A)'},
+  {l:'M&#257;ori communities',w:78,v:'3.9',c:'linear-gradient(90deg,#1F7A3F,#5DD88A)'},
+  {l:'Pacific communities',w:76,v:'3.8',c:'linear-gradient(90deg,#1F7A3F,#5DD88A)'},
+  {l:'Rainbow / Takat&#257;pui',w:72,v:'3.6',c:'linear-gradient(90deg,#5A67D8,#9575CD)'},
+  {l:'Long-term PLHIV',w:44,v:'2.2',c:'linear-gradient(90deg,#0E8F98,#15B8C4)'},
+];
+var sb=document.getElementById('sbars');
+SDATA.forEach(function(s){
+  var d=document.createElement('div');d.className='sbar';
+  d.innerHTML='<div class="sbar-l">'+s.l+'</div><div class="sbar-t"><div class="sbar-f" id="sf_'+s.l.replace(/[\s\/]/g,'')+'"></div></div><div class="sbar-v">'+s.v+'</div>';
+  sb.appendChild(d);
+});
+function animBars(){
+  SDATA.forEach(function(s){
+    var el=document.getElementById('sf_'+s.l.replace(/[\s\/]/g,''));
+    if(el){el.style.background=s.c;el.style.width='0';setTimeout(function(){el.style.transition='width 1.5s cubic-bezier(.16,1,.3,1)';el.style.width=s.w+'%';},100);}
+  });
+}
+
+/* ═══ CHARTS ═══ */
+function buildCharts(){
+  Chart.defaults.color='rgba(240,244,255,.4)';
+  Chart.defaults.borderColor='rgba(255,255,255,.06)';
+  Chart.defaults.font.family='DM Sans';
+  Chart.defaults.font.size=11;
+  var TL='#15B8C4',GD='#D4A43C',GN='#28A652',RD='#E74C3C',PR='#5A67D8',PK='#E74C8B';
+
+  new Chart(document.getElementById('cAge'),{
+    type:'bar',
+    data:{labels:['16-24','25-34','35-44','45-54','55-64','65+'],datasets:[{data:[18,31,24,14,8,5],borderRadius:5,backgroundColor:['rgba(21,184,196,.95)','rgba(21,184,196,1)','rgba(21,184,196,.78)','rgba(21,184,196,.58)','rgba(21,184,196,.4)','rgba(21,184,196,.22)']}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.raw+'%'}}}},scales:{y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:function(v){return v+'%'}}},x:{grid:{display:false}}}}
+  });
+  new Chart(document.getElementById('cLang'),{
+    type:'doughnut',
+    data:{labels:['English (48%)','Spanish (32%)','Te Reo Maori (8%)','Mixed (7%)','Other (5%)'],datasets:[{data:[48,32,8,7,5],backgroundColor:[TL,GD,GN,PR,'rgba(255,255,255,.18)'],borderColor:'#020510',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'63%',plugins:{legend:{position:'bottom',labels:{padding:11,usePointStyle:true,font:{size:10}}}}}
+  });
+  new Chart(document.getElementById('cMom'),{
+    type:'radar',
+    data:{labels:['New Diag.','Disclosure','Identity','Discrim.','Long-term','Online Hate'],datasets:[{label:'Session %',data:[28,18,22,14,9,9],backgroundColor:'rgba(14,143,152,.1)',borderColor:TL,borderWidth:2,pointBackgroundColor:TL,pointRadius:5,pointHoverRadius:7}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{grid:{color:'rgba(255,255,255,.07)'},pointLabels:{font:{size:10},color:'rgba(240,244,255,.5)'},ticks:{display:false,stepSize:10},suggestedMin:0,suggestedMax:35}}}
+  });
+  new Chart(document.getElementById('cPrep'),{
+    type:'bar',
+    data:{labels:['European NZ','Maori','Pacific','Migrant LatAm','Migrant Asian','Rainbow'],datasets:[{label:'PrEP Awareness %',data:[71,48,42,38,35,74],backgroundColor:'rgba(40,166,82,.65)',borderColor:GN,borderWidth:1,borderRadius:4},{label:'On Antivirals (PLHIV) %',data:[94,81,78,72,68,92],backgroundColor:'rgba(21,184,196,.5)',borderColor:TL,borderWidth:1,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:12,usePointStyle:true,font:{size:10}}}},scales:{y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:function(v){return v+'%'}},max:100},x:{grid:{display:false},ticks:{font:{size:9}}}}}
+  });
+  new Chart(document.getElementById('cMis'),{
+    type:'doughnut',
+    data:{labels:['Social media hate (34%)','Medical misinfo (22%)','Discriminatory (19%)','Threats (11%)','Harmful content (8%)','Other (6%)'],datasets:[{data:[34,22,19,11,8,6],backgroundColor:[RD,GD,PR,PK,'rgba(21,184,196,.7)','rgba(255,255,255,.18)'],borderColor:'#020510',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'56%',plugins:{legend:{position:'bottom',labels:{padding:9,usePointStyle:true,font:{size:9}}}}}
+  });
+  new Chart(document.getElementById('cTrend'),{
+    type:'line',
+    data:{labels:['Week 1','Week 2','Week 3','Week 4','Week 5','Week 6','Week 7','Week 8'],
+      datasets:[
+        {label:'Avg Stigma Score (left)',data:[4.2,4.0,3.9,3.7,3.6,3.4,3.3,3.1],borderColor:RD,backgroundColor:'rgba(192,57,43,.07)',borderWidth:2.5,fill:true,tension:.4,pointBackgroundColor:RD,pointRadius:5,pointHoverRadius:7},
+        {label:'Session Completion % (right)',data:[58,62,65,68,70,72,74,76],borderColor:GN,backgroundColor:'rgba(40,166,82,.07)',borderWidth:2,fill:true,tension:.4,pointBackgroundColor:GN,pointRadius:4,pointHoverRadius:6,yAxisID:'y2'}
+      ]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'bottom',labels:{padding:18,usePointStyle:true}}},scales:{y:{grid:{color:'rgba(255,255,255,.04)'},min:1,max:5,title:{display:true,text:'Stigma Score (1-5)',color:'rgba(240,244,255,.28)',font:{size:10}}},y2:{position:'right',grid:{display:false},min:0,max:100,ticks:{callback:function(v){return v+'%'}},title:{display:true,text:'Completion %',color:'rgba(240,244,255,.28)',font:{size:10}}},x:{grid:{display:false}}}}
+  });
+}
+
+/* Map tooltips */
+document.querySelectorAll('.rdot').forEach(function(d){
+  d.addEventListener('mouseenter',function(){
+    var t=document.getElementById('mtt');
+    document.getElementById('mttr').textContent=d.dataset.r;
+    document.getElementById('mttc').innerHTML=d.dataset.s+'<br>'+d.dataset.sg+'<br>'+d.dataset.p;
+    t.classList.add('on');
+  });
+  d.addEventListener('mouseleave',function(){document.getElementById('mtt').classList.remove('on');});
+  d.addEventListener('mousemove',function(e){
+    var r=d.closest('.nmw').getBoundingClientRect();
+    var t=document.getElementById('mtt');
+    t.style.left=(e.clientX-r.left+10)+'px';
+    t.style.top=(e.clientY-r.top-8)+'px';
+  });
+});
+
+/* ═══ CSV DOWNLOAD ═══ */
+var CSV_DATA={
+  stigma:'Community,Stigma Score (1-5),Percentage\nNew diagnosis,4.7,94\nOnline hate (Moment 6),4.5,90\nRural communities,4.3,86\nMigrant communities,4.1,82\nMaori communities,3.9,78\nPacific communities,3.8,76\nRainbow/Takatapui,3.6,72\nLong-term PLHIV,2.2,44\n',
+  prep:'Community,PrEP Awareness %,On Antivirals %\nEuropean NZ,71,94\nMaori,48,81\nPacific,42,78\nMigrant (Latin American),38,72\nMigrant (Asian),35,68\nRainbow/Takatapui,74,92\n',
+  trend:'Week,Avg Stigma Score,Session Completion %\n1,4.2,58\n2,4.0,62\n3,3.9,65\n4,3.7,68\n5,3.6,70\n6,3.4,72\n7,3.3,74\n8,3.1,76\n',
+  kpi:'Metric,Value,Unit\nSessions this month,847,count\nSessions with actionable step,73,%\nUsers felt less alone,41,%\nCrisis protocol activations,6,count\nSessions in Spanish,38,%\n',
+  map:'Region,Sessions,Stigma Signal,PrEP Awareness\nAuckland,342,High,68%\nWellington,124,Medium,71%\nChristchurch,98,Medium,65%\nWaikato/Hamilton,67,Medium-High,58%\nNorthland (Rural),28,Very High,31%\nOtago/Dunedin,52,Medium,60%\n',
+  age:'Age Group,Sessions %\n16-24,18\n25-34,31\n35-44,24\n45-54,14\n55-64,8\n65+,5\n',
+  lang:'Language,Sessions %\nEnglish,48\nSpanish,32\nTe Reo Maori,8\nMixed,7\nOther,5\n',
+  moments:'Moment,Description,Session %\n1 New Diagnosis,Recently diagnosed,28\n2 Disclosure,Deciding who to tell,18\n3 Identity/Stigma,Internal stigma,22\n4 Discrimination,Facing discrimination,14\n5 Long-term,Living with HIV,9\n6 Online Hate,Digital stigma,9\n',
+  misinfo:'Type,Percentage\nSocial media hate speech,34\nMedical misinformation,22\nDiscriminatory comments,19\nThreating messages,11\nHarmful content,8\nOther,6\n',
+};
+function dlCSV(key){
+  var d=CSV_DATA[key];if(!d)return;
+  var blob=new Blob([d],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;a.download='NOVA_'+key+'_data.csv';a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ═══ CHAT (DEMO MODE) ═══ */
+var chatOpen=false,msgCt=0;
+
+var RESPONSES={
+  'just found out|just got my results|i have hiv|hiv positive|diagnosed':[
+    "Eh. Take a breath.\n\nYou just got some information — that's all a diagnosis is right now. I know that doesn't feel small. It's enormous. But it's not a sentence on your life.\n\nPeople living with HIV today live full, long lives. Not someday — now. Treatment changed everything.\n\nWhat's the loudest thing for you right now?",
+    "Hey. I hear you. That moment when you get the results — it's a lot to land.\n\nI found out I had HIV in 2011 and I remember exactly what that felt like. Like the floor dropped.\n\nBut you reached out, which takes something. What's going through your head?"
+  ],
+  'estigma|miedo al estigma|vergüenza|vergüenza|discrimina':[
+    "El miedo a lo que van a pensar es de los más pesados que hay.\n\nPero el momento de contarlo — si alguna vez decidís hacerlo — es tuyo. Solo tuyo. Nadie te puede apurar.\n\n¿Hay alguien en particular que te preocupa?"
+  ],
+  'u=u|undetectable|untransmittable|tratamiento|treatment':[
+    "U=U means Undetectable = Untransmittable. That's confirmed science — WHO 2025.\n\nWhen someone on treatment has an undetectable viral load, they cannot sexually transmit HIV. This isn't hope — it's fact. It changes everything about how we understand living with HIV.\n\nDoes that connect to something specific you're thinking about?"
+  ],
+  'hate|odio|tiktok|instagram|online|mocking|burla':[
+    "What you saw wasn't okay. That kind of content comes from ignorance — people who've never actually met someone living with HIV.\n\nThat doesn't make it hurt less. It does real damage.\n\nIf you want to do something about it: Netsafe NZ (netsafe.org.nz) handles exactly this — they keep a formal record and can escalate to platforms.\n\nDo you want to talk about how it made you feel, or would you rather focus on what to do about it?"
+  ],
+  'solo|sola|lonely|alone|nadie':[
+    "Not being alone doesn't always feel possible in this. Especially if you haven't told anyone.\n\nBut you're talking to me right now, which means something.\n\nWhat does \"alone\" feel like for you — is it that there's no one to tell, or that you feel like no one would understand?"
+  ],
+  'no puedo más|no puedo mas|can\'t do this|want to die|hurt myself|quiero morir|mejor no estar':[
+    "Hey — I want to make sure I understand what you're saying. Are you having thoughts of hurting yourself right now?\n\nI'm not going anywhere. I just want to know what's actually going on for you."
+  ],
+  'who are you|quién eres|quien eres|what is nova':[
+    "I'm NOVA — built by Emanuel Figueroa, an Argentine who moved to Auckland and found out he had HIV in 2011. He built me because he needed something like this when he was diagnosed, and it didn't exist.\n\nI'm not a doctor or therapist. I'm more like a friend who's been through it and will tell you the truth.\n\nWhat brought you here today?"
+  ],
+  'default':[
+    "I'm here. Tell me more about what's going on.",
+    "Yeah. That sounds hard. What's been the heaviest part of it for you?",
+    "I hear you. Can you tell me a bit more — what's been on your mind most?",
+    "That makes sense. What would help most right now — just talking it through, or actual information about something specific?"
+  ]
+};
+
+function getResponse(txt){
+  var low=txt.toLowerCase();
+  for(var key in RESPONSES){
+    if(key==='default')continue;
+    var keys=key.split('|');
+    for(var i=0;i<keys.length;i++){
+      if(low.indexOf(keys[i])>-1){
+        var arr=RESPONSES[key];
+        return arr[Math.floor(Math.random()*arr.length)];
+      }
+    }
+  }
+  var def=RESPONSES['default'];
+  return def[Math.floor(Math.random()*def.length)];
+}
+
+function toggleChat(){
+  chatOpen=!chatOpen;
+  document.getElementById('cpanel').classList.toggle('open',chatOpen);
+  if(chatOpen&&msgCt===0)initChat();
+}
+function openChat(){if(!chatOpen)toggleChat();}
+
+function initChat(){
+  showDots();
+  setTimeout(function(){
+    hideDots();
+    addMsg("Hey — I'm NOVA. I've been living with HIV since 2011 and was built by Emanuel so people have someone to talk to who actually gets it. This chat is private — nothing is stored permanently. I'm an AI, not a human professional. What's on your mind?",'nova');
+  },1200);
+}
+
+function sMsg(){
+  var inp=document.getElementById('cpInp');
+  var txt=inp.value.trim();if(!txt)return;
+  inp.value='';inp.style.height='41px';msgCt++;
+  addMsg(txt,'user');
+  showDots();
+  var delay=850+Math.random()*700;
+  setTimeout(function(){hideDots();addMsg(getResponse(txt),'nova');},delay);
+}
+
+function sQ(t){document.getElementById('cpInp').value=t;sMsg();}
+
+function showCrisis(){
+  addMsg("What you're feeling matters. Please connect with real human support right now:\n\n📞 Lifeline Aotearoa: 0800 543 354 (24/7, free)\n💬 Text or call 1737 (24/7, free)\n❤️ Body Positive NZ: bodypositivity.org.nz\n🏥 Burnett Foundation: burnettnz.co.nz\n🚨 Emergency: 111",'crisis');
+}
+
+function addMsg(txt,who){
+  var msgs=document.getElementById('cpMsgs');
+  var dots=document.getElementById('tdots');
+  var d=document.createElement('div');
+  var cls=who==='nova'?'nmsg':who==='crisis'?'crsmsg':who==='alert'?'alrt':'umsg';
+  d.className='cmsg '+cls;
+  d.innerHTML=txt.replace(/\n/g,'<br>');
+  msgs.insertBefore(d,dots);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function showDots(){var d=document.getElementById('tdots');d.style.display='flex';document.getElementById('cpMsgs').scrollTop=99999;}
+function hideDots(){document.getElementById('tdots').style.display='none';}
+</script>
+</body>
+</html>
