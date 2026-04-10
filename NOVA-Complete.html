@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOVA — Digital HIV Educator · Aotearoa New Zealand</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ─ RESET ─ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --night:#0A1628;--deep:#0F2044;--card:rgba(255,255,255,.04);
+  --teal:#0B7B82;--tm:#12A5AD;--tl:#7FD4D9;
+  --gold:#C8973A;--gl:#E8C07A;
+  --gn:#2E7D32;--gm:#43A047;--gli:#81C784;
+  --red:#C62828;--pur:#5C6BC0;
+  --w:#f8fafc;--mu:rgba(248,250,252,.46);--di:rgba(248,250,252,.22);
+  --b7:rgba(255,255,255,.07);--bt:rgba(11,123,130,.25);
+  --sn:'Cormorant Garamond',serif;--sb:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sb);background:var(--night);color:var(--w);overflow-x:hidden;line-height:1.65}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--teal)}
+
+/* ─ ANIMATED BG ─ */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.nb{position:absolute;border-radius:50%;filter:blur(90px)}
+.nb1{width:800px;height:800px;top:-200px;left:-100px;background:radial-gradient(circle,rgba(11,123,130,.18),transparent 65%);animation:nbf 24s ease-in-out infinite}
+.nb2{width:600px;height:600px;top:30%;right:-150px;background:radial-gradient(circle,rgba(18,165,173,.13),transparent 65%);animation:nbf 30s ease-in-out -10s infinite}
+.nb3{width:700px;height:700px;bottom:-200px;left:20%;background:radial-gradient(circle,rgba(11,50,120,.2),transparent 65%);animation:nbf 38s ease-in-out -18s infinite}
+@keyframes nbf{
+  0%,100%{transform:translate(0,0) scale(1)}
+  25%{transform:translate(60px,-80px) scale(1.1)}
+  50%{transform:translate(-40px,60px) scale(.93)}
+  75%{transform:translate(80px,40px) scale(1.06)}
+}
+
+/* ─ STARS ─ */
+#stars{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+/* ─ QUICK EXIT ─ */
+.qx{position:fixed;top:18px;right:18px;z-index:9000;background:#B71C1C;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-family:var(--sb);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 0 24px rgba(183,28,28,.5);transition:all .2s;opacity:0;animation:fadeD .5s 2.5s forwards}
+.qx:hover{background:#D32F2F;transform:translateY(-1px)}
+
+/* ─ BANNER ─ */
+.pvb{background:rgba(11,123,130,.1);border-bottom:1px solid rgba(11,123,130,.2);padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:9px;position:relative;z-index:10;opacity:0;animation:slideD .5s .2s forwards}
+.pvdot{width:6px;height:6px;border-radius:50%;background:var(--tl);flex-shrink:0;animation:blink 2s ease-in-out infinite}
+.pvtxt{font-size:12px;color:rgba(255,255,255,.5)}
+.pvtxt strong{color:var(--tl)}
+.fndlock{position:absolute;right:20px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:5px;cursor:pointer;opacity:.18;transition:opacity .3s;background:none;border:none;padding:5px 9px;border-radius:7px}
+.fndlock:hover{opacity:.7;background:rgba(11,123,130,.12)}
+.fndlock svg{width:13px;height:13px;fill:var(--tl)}
+.fndlock span{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--tl);display:none}
+@media(min-width:700px){.fndlock:hover span{display:block}}
+
+/* ─ PASSWORD MODAL ─ */
+.pwdov{position:fixed;inset:0;z-index:8000;background:rgba(3,6,16,.96);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.pwdov.on{opacity:1;pointer-events:all}
+.pwdbox{background:var(--deep);border:1px solid rgba(11,123,130,.35);border-radius:20px;padding:40px 34px;max-width:400px;width:100%;position:relative;transform:translateY(22px);transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.pwdov.on .pwdbox{transform:translateY(0)}
+.pwdbox::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--tm),transparent);border-radius:20px 20px 0 0}
+.pwdcls{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--mu);font-size:16px;cursor:pointer;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.pwdcls:hover{background:rgba(255,255,255,.1);color:var(--w)}
+.pwdico{width:52px;height:52px;border-radius:50%;background:rgba(11,123,130,.12);border:1px solid rgba(11,123,130,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px}
+.pwdtit{font-family:var(--sn);font-size:26px;font-weight:300;text-align:center;margin-bottom:5px}
+.pwdsub{font-size:12px;color:var(--mu);text-align:center;margin-bottom:24px;line-height:1.7}
+.pwdsub strong{color:var(--tl)}
+.pwdinp{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--b7);border-radius:10px;padding:13px 16px;color:var(--w);font-family:var(--sb);font-size:14px;letter-spacing:3px;outline:none;transition:border-color .2s;margin-bottom:12px;text-align:center}
+.pwdinp::placeholder{letter-spacing:1px;color:var(--di)}
+.pwdinp:focus{border-color:rgba(11,123,130,.55)}
+.pwdbtn{width:100%;background:linear-gradient(135deg,var(--teal),var(--tm));border:none;border-radius:10px;padding:13px;color:#fff;font-family:var(--sb);font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer;transition:all .3s;box-shadow:0 6px 24px rgba(11,123,130,.32)}
+.pwdbtn:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(11,123,130,.55)}
+.pwderr{font-size:12px;color:#f87171;text-align:center;margin-top:9px;opacity:0;transition:opacity .2s;min-height:17px}
+.pwderr.on{opacity:1}
+.pwdnote{font-size:10px;color:var(--di);text-align:center;margin-top:15px;line-height:1.7}
+
+/* ─ HERO ─ */
+.hero{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 80px;text-align:center}
+
+/* NOVA SYMBOL — STATIC IMPERIAL */
+.nsym{width:140px;height:140px;margin:0 auto 36px;position:relative;filter:drop-shadow(0 0 30px rgba(11,123,130,.5));opacity:0;animation:symIn 1.4s cubic-bezier(.16,1,.3,1) .5s forwards;overflow:visible}
+/* Orbital rings around static symbol */
+.orb{position:absolute;border-radius:50%;top:50%;left:50%;pointer-events:none}
+.orb1{width:200%;height:200%;border:1px solid rgba(11,123,130,.15);animation:orbit 20s linear infinite}
+.orb2{width:158%;height:158%;border:1px solid rgba(18,165,173,.22);animation:orbit 13s linear infinite reverse}
+.orb3{width:265%;height:265%;border:1px solid rgba(11,123,130,.08);animation:orbit 33s linear infinite}
+.orbdot{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--tm);box-shadow:0 0 12px var(--tm);top:-3.5px;left:50%;margin-left:-3.5px}
+/* Glow corona */
+.nsym::before{content:'';position:absolute;inset:-32px;border-radius:50%;background:radial-gradient(circle,rgba(11,123,130,.22) 0%,transparent 65%);animation:corona 3.5s ease-in-out infinite;pointer-events:none;z-index:-1}
+@keyframes orbit{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes orbit{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes corona{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
+
+.wm{font-family:var(--sn);font-size:clamp(64px,14vw,102px);font-weight:300;letter-spacing:clamp(14px,4vw,32px);text-transform:uppercase;line-height:1;margin-bottom:14px;opacity:0;animation:fadeU .9s 1s forwards}
+.wm span{color:var(--tm)}
+.tg{font-size:12px;letter-spacing:4px;color:var(--di);text-transform:uppercase;margin-bottom:6px;opacity:0;animation:fadeU .9s 1.2s forwards}
+.tgm{font-size:11px;letter-spacing:3px;color:rgba(11,165,173,.45);text-transform:uppercase;margin-bottom:52px;font-style:italic;opacity:0;animation:fadeU .9s 1.35s forwards}
+.pcard{background:var(--card);border:1px solid var(--b7);border-radius:20px;padding:26px 34px;max-width:500px;width:100%;margin:0 auto 44px;opacity:0;animation:fadeU .9s 1.5s forwards;position:relative;overflow:hidden}
+.pcard::before{content:'';position:absolute;top:0;left:-100%;width:200%;height:2px;background:linear-gradient(90deg,transparent,var(--tm),transparent);animation:shimmer 3s ease-in-out infinite}
+@keyframes shimmer{to{left:100%}}
+.pitems{display:flex;flex-direction:column;gap:12px}
+.pitem{display:flex;align-items:center;gap:13px;font-size:13px;color:var(--mu);text-align:left}
+.pchk{width:20px;height:20px;border-radius:50%;background:rgba(11,123,130,.14);border:1px solid rgba(11,123,130,.42);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--tl);flex-shrink:0;transition:all .3s}
+.pitem:hover .pchk{background:rgba(11,123,130,.3);transform:scale(1.1)}
+.ctaw{display:flex;flex-direction:column;align-items:center;gap:14px;opacity:0;animation:fadeU .9s 1.7s forwards}
+.btnm{background:linear-gradient(135deg,var(--teal),var(--tm));color:#fff;border:none;padding:17px 46px;border-radius:50px;font-family:var(--sb);font-size:15px;font-weight:500;letter-spacing:1px;cursor:pointer;box-shadow:0 8px 32px rgba(11,123,130,.4);transition:all .3s}
+.btnm:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(11,123,130,.6)}
+.btns{background:transparent;border:1px solid rgba(11,123,130,.35);color:var(--mu);padding:12px 34px;border-radius:50px;font-family:var(--sb);font-size:13px;letter-spacing:1px;cursor:pointer;transition:all .3s}
+.btns:hover{border-color:rgba(11,123,130,.7);color:var(--tl)}
+.ctan{font-size:11px;color:var(--di);letter-spacing:1px}
+.scrl{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;opacity:0;animation:fadeU .9s 2.8s forwards}
+.scrl-l{width:1px;height:38px;background:linear-gradient(to bottom,transparent,rgba(11,123,130,.5));animation:pulseO 2s ease-in-out infinite}
+.scrl-t{font-size:9px;letter-spacing:3px;color:var(--di);text-transform:uppercase}
+
+/* ─ COMMON ─ */
+.sec{position:relative;z-index:2;padding:96px 24px}
+.inn{max-width:1180px;margin:0 auto}
+.slbl{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--tm);font-weight:600;margin-bottom:10px}
+.stit{font-family:var(--sn);font-size:clamp(26px,4.5vw,44px);font-weight:300;margin-bottom:12px;line-height:1.2}
+.ssub{font-size:13px;color:var(--mu);margin-bottom:56px;max-width:600px;line-height:1.75}
+.ctr{text-align:center}.ctr .ssub{margin-left:auto;margin-right:auto}
+
+/* ─ STATS ─ */
+.stats-bg{background:linear-gradient(to bottom,var(--night),var(--deep));border-top:1px solid rgba(11,123,130,.15)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2px;margin-bottom:60px}
+.scd{background:var(--card);border:1px solid var(--b7);padding:44px 24px;text-align:center;opacity:0;transform:translateY(20px);transition:all .6s cubic-bezier(.16,1,.3,1)}
+.scd.on{opacity:1;transform:none}.scd:hover{background:rgba(11,123,130,.08)}
+.snum{font-family:var(--sn);font-size:60px;font-weight:300;color:var(--tm);line-height:1;margin-bottom:6px}
+.sunit{font-size:20px;color:var(--gold)}
+.slbl2{font-size:12px;color:var(--mu);line-height:1.5;margin-bottom:5px}
+.ssrc{font-size:10px;color:var(--di)}
+.sqt{font-family:var(--sn);font-size:21px;font-style:italic;color:rgba(255,255,255,.5);max-width:600px;margin:0 auto;line-height:1.7;text-align:center}
+
+/* ─ MOMENTS ─ */
+.mom-bg{background:var(--deep);border-top:1px solid rgba(255,255,255,.04)}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px}
+.mcd{background:var(--card);border:1px solid var(--b7);border-radius:14px;padding:26px 18px;text-align:center;opacity:0;transform:translateY(16px);transition:all .5s}
+.mcd.on{opacity:1;transform:none}.mcd:hover{background:rgba(11,123,130,.1);border-color:rgba(11,123,130,.3);transform:translateY(-4px)}
+.mnm{font-family:var(--sn);font-size:38px;color:rgba(11,123,130,.38);line-height:1;margin-bottom:8px;transition:color .3s}
+.mcd:hover .mnm{color:var(--tm)}
+.mtxt{font-size:12px;color:var(--mu);line-height:1.5}
+
+/* ─ PILLARS ─ */
+.pil-bg{background:linear-gradient(to bottom,var(--deep),var(--night));border-top:1px solid rgba(255,255,255,.04)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:2px;max-width:1180px;margin:0 auto}
+.pilc{background:rgba(255,255,255,.02);padding:34px 26px;border-left:2px solid transparent;opacity:0;transform:translateY(16px);transition:all .5s}
+.pilc.on{opacity:1;transform:none}.pilc:hover{background:rgba(11,123,130,.07);border-left-color:var(--teal)}
+.pnum{font-family:var(--sn);font-size:46px;color:rgba(11,123,130,.28);line-height:1;margin-bottom:12px}
+.pen{font-size:15px;font-weight:500;margin-bottom:3px}
+.pes{font-size:11px;color:var(--mu);font-style:italic;margin-bottom:14px}
+.pdsc{font-size:12px;color:var(--mu);line-height:1.7}
+
+/* ─ MĀORI ─ */
+.maori-bg{position:relative;z-index:2;padding:96px 24px;background:var(--night);border-top:2px solid rgba(46,125,50,.22)}
+.maori-bg::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#52A052,transparent)}
+.mwg{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:18px;margin-bottom:56px}
+.mwc{background:var(--card);border:1px solid rgba(46,125,50,.2);border-radius:14px;padding:28px 22px;opacity:0;transform:translateY(16px);transition:all .5s}
+.mwc.on{opacity:1;transform:none}.mwc:hover{background:rgba(46,125,50,.08);border-color:rgba(82,160,82,.35)}
+.mwi{font-size:30px;margin-bottom:12px}
+.mwn{font-size:15px;font-weight:500;margin-bottom:3px}
+.mwr{font-size:10px;letter-spacing:2px;color:var(--gli);text-transform:uppercase;margin-bottom:12px}
+.mwd{font-size:12px;color:var(--mu);line-height:1.75}
+
+/* ─ VISION ─ */
+.vis-bg{position:relative;z-index:2;padding:96px 24px;background:var(--deep);border-top:1px solid rgba(11,123,130,.15)}
+.vtl{display:flex;flex-direction:column;position:relative;max-width:860px;margin:0 auto}
+.vtl::before{content:'';position:absolute;left:27px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--teal),rgba(11,123,130,.08))}
+.vi{display:grid;grid-template-columns:56px 1fr;gap:28px;align-items:start;padding:36px 0;border-bottom:1px solid rgba(255,255,255,.04);opacity:0;transform:translateX(-16px);transition:all .6s cubic-bezier(.16,1,.3,1)}
+.vi:last-child{border-bottom:none}.vi.on{opacity:1;transform:none}
+.vdot{width:54px;height:54px;border-radius:50%;background:rgba(11,123,130,.14);border:1px solid rgba(11,123,130,.38);display:flex;align-items:center;justify-content:center;font-family:var(--sn);font-size:17px;color:var(--tm);flex-shrink:0;z-index:1}
+.vcon{padding-top:8px}
+.vy{font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;font-weight:500;margin-bottom:7px}
+.vtit{font-family:var(--sn);font-size:24px;margin-bottom:8px}
+.vdsc{font-size:13px;color:var(--mu);line-height:1.75}
+.vscl{display:inline-block;margin-top:10px;font-size:10px;letter-spacing:2px;color:var(--tl);text-transform:uppercase;font-weight:500}
+
+/* ─ QUOTE ─ */
+.qt-bg{position:relative;z-index:2;padding:96px 24px;text-align:center;background:linear-gradient(to bottom,var(--deep),var(--night));border-top:1px solid rgba(11,123,130,.12)}
+.qtmk{font-family:var(--sn);font-size:90px;color:rgba(11,123,130,.1);line-height:.5;display:block;margin-bottom:24px}
+.qtt{font-family:var(--sn);font-size:clamp(19px,3vw,28px);max-width:760px;margin:0 auto 20px;line-height:1.55;font-style:italic}
+.qta{font-size:12px;color:var(--mu);letter-spacing:2px}
+
+/* ─ CHAT FAB ─ */
+.cfab{position:fixed;bottom:28px;right:28px;z-index:700;width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--tm));border:none;cursor:pointer;box-shadow:0 8px 32px rgba(11,123,130,.65);display:flex;align-items:center;justify-content:center;transition:all .3s;opacity:0;animation:fadeD .5s 3s forwards}
+.cfab:hover{transform:scale(1.1);box-shadow:0 14px 44px rgba(11,123,130,.85)}
+.cfab svg{width:26px;height:26px;fill:#fff}
+.cdot{position:absolute;top:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:#22c55e;border:2px solid var(--night);animation:blink 2s ease-in-out infinite}
+
+/* ─ CHAT PANEL ─ */
+.cpanel{position:fixed;bottom:0;right:28px;z-index:690;width:400px;height:78vh;max-height:660px;background:linear-gradient(180deg,#0b1525,#0e1e40);border:1px solid rgba(11,123,130,.32);border-bottom:none;border-radius:20px 20px 0 0;display:flex;flex-direction:column;overflow:hidden;transform:translateY(108%);transition:transform .45s cubic-bezier(.16,1,.3,1);box-shadow:0 -10px 60px rgba(0,0,0,.75)}
+.cpanel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--tm),transparent)}
+.cpanel.on{transform:translateY(0)}
+.cphd{background:rgba(6,12,28,.96);padding:13px 16px;display:flex;align-items:center;gap:11px;border-bottom:1px solid rgba(11,123,130,.16);flex-shrink:0}
+.cpav{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--tm));display:flex;align-items:center;justify-content:center;font-family:var(--sn);font-size:16px;color:#fff;position:relative;flex-shrink:0}
+.cpav::after{content:'';position:absolute;bottom:1px;right:1px;width:8px;height:8px;background:#22c55e;border-radius:50%;border:1.5px solid #0e1e40}
+.cpnfo{flex:1}
+.cpnm{font-size:13px;font-weight:600;letter-spacing:.5px}
+.cpst{font-size:10px;color:var(--tl);letter-spacing:.3px}
+.cpprv{font-size:9px;color:var(--di);text-align:right;line-height:1.5}
+.cpprv strong{color:var(--tl)}
+.cpx{background:none;border:none;color:var(--mu);cursor:pointer;font-size:15px;width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.cpx:hover{background:rgba(255,255,255,.1);color:var(--w)}
+.cpmsgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px}
+.cpmsgs::-webkit-scrollbar{width:2px}
+.cpmsgs::-webkit-scrollbar-thumb{background:rgba(11,123,130,.3)}
+.cmsg{max-width:87%;padding:10px 13px;border-radius:14px;font-size:13px;line-height:1.55;animation:msgIn .25s ease}
+@keyframes msgIn{from{opacity:0;transform:scale(.96) translateY(5px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.nmsg{background:rgba(255,255,255,.05);color:rgba(255,255,255,.82);border-bottom-left-radius:3px;align-self:flex-start;border:1px solid rgba(11,123,130,.16)}
+.umsg{background:linear-gradient(135deg,var(--teal),var(--tm));color:#fff;border-bottom-right-radius:3px;align-self:flex-end}
+.crsmsg{background:rgba(183,28,28,.1);border:1px solid rgba(183,28,28,.28);color:rgba(255,190,190,.9);align-self:flex-start;border-radius:12px;max-width:93%}
+.tdots{display:none;align-self:flex-start;gap:4px;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(11,123,130,.16);border-radius:14px;border-bottom-left-radius:3px}
+.tdots span{width:5px;height:5px;border-radius:50%;background:var(--tm);animation:td .9s ease-in-out infinite}
+.tdots span:nth-child(2){animation-delay:.15s}
+.tdots span:nth-child(3){animation-delay:.3s}
+@keyframes td{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.cpft{border-top:1px solid rgba(11,123,130,.12);padding:11px;flex-shrink:0;background:rgba(4,8,20,.7)}
+.cpqks{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.cpqk{background:rgba(11,123,130,.1);border:1px solid rgba(11,123,130,.22);border-radius:15px;padding:4px 10px;font-size:11px;color:rgba(127,212,217,.75);cursor:pointer;transition:all .2s;font-family:var(--sb)}
+.cpqk:hover{background:rgba(11,123,130,.22);color:#fff}
+.cprow{display:flex;gap:7px;margin-bottom:7px}
+.cpinp{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(11,123,130,.22);border-radius:10px;padding:9px 12px;color:var(--w);font-family:var(--sb);font-size:13px;outline:none;transition:border-color .2s;resize:none;height:40px;overflow:hidden}
+.cpinp::placeholder{color:var(--di)}
+.cpinp:focus{border-color:rgba(11,123,130,.55)}
+.cpsnd{background:var(--teal);border:none;border-radius:10px;padding:9px 15px;color:#fff;cursor:pointer;font-size:16px;transition:all .2s;flex-shrink:0}
+.cpsnd:hover{background:var(--tm);transform:scale(1.06)}
+.cpsnd:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.cpcrs{width:100%;background:rgba(183,28,28,.1);border:1px solid rgba(183,28,28,.25);border-radius:9px;padding:8px;color:#f87171;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sb);display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s}
+.cpcrs:hover{background:rgba(183,28,28,.22);color:#fff}
+
+/* ─ ECOSYSTEM ─ */
+.eco-sec{position:relative;z-index:2;padding:96px 24px;background:linear-gradient(180deg,#060e1c,#030810);border-top:1px solid rgba(11,123,130,.18);overflow:hidden}
+.eco-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(11,123,130,.07),transparent);pointer-events:none}
+.eco-wrap{max-width:960px;margin:0 auto;position:relative}
+.ecosvg{width:100%;height:auto;display:block}
+.enode{cursor:pointer}
+.enode:hover .ecircle{filter:brightness(1.4)}
+.ecpulse{animation:ep 3.2s ease-in-out infinite}
+.ecpulse2{animation:ep 3.2s ease-in-out .9s infinite}
+@keyframes ep{0%,100%{r:42;opacity:.4}55%{r:62;opacity:0}}
+.etip{position:absolute;background:rgba(5,10,24,.97);border:1px solid rgba(11,123,130,.4);border-radius:11px;padding:10px 14px;font-size:12px;pointer-events:none;opacity:0;transition:opacity .18s;z-index:20;min-width:165px;max-width:220px}
+.etip.on{opacity:1}
+.etip-t{font-weight:600;color:var(--tl);margin-bottom:4px;font-size:13px}
+.etip-d{color:var(--mu);line-height:1.55}
+.eco-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:12px;margin-top:44px}
+.eco-card{border-radius:12px;padding:16px 18px}
+.eco-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:5px;font-weight:600}
+.eco-txt{font-size:12px;color:var(--mu);line-height:1.65}
+
+/* ─ CRISIS BAR / FOOTER ─ */
+.cbar{background:rgba(11,123,130,.07);border-top:1px solid rgba(11,123,130,.15);padding:14px 24px;text-align:center;position:relative;z-index:2}
+.ctxt{font-size:12px;color:var(--mu)}
+.ctxt a{color:rgba(11,123,130,.7);text-decoration:none;transition:color .2s}
+.ctxt a:hover{color:var(--tl)}
+footer{border-top:1px solid rgba(255,255,255,.05);padding:34px 24px;text-align:center;position:relative;z-index:2;background:var(--night)}
+.ftxt{font-size:11px;color:var(--di);line-height:2}
+.flangs{display:flex;justify-content:center;gap:11px;margin-top:14px;flex-wrap:wrap}
+.flang{font-size:9px;letter-spacing:2px;color:rgba(11,123,130,.45);padding:3px 12px;border:1px solid rgba(11,123,130,.2);border-radius:18px;text-transform:uppercase;cursor:default;transition:all .3s}
+.flang:hover{background:rgba(11,123,130,.1);color:var(--tl)}
+.fndlnk{display:inline-flex;align-items:center;gap:5px;margin-top:18px;padding:6px 14px;border:1px solid rgba(11,123,130,.14);border-radius:18px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(11,123,130,.35);cursor:pointer;background:none;transition:all .3s}
+.fndlnk:hover{border-color:rgba(11,123,130,.4);color:var(--tl)}
+.fndlnk svg{width:10px;height:10px;fill:currentColor}
+
+/* ─ DASHBOARD ─ */
+#pdash{display:none;position:relative;z-index:2;background:linear-gradient(180deg,#06101e,var(--night));border-top:2px solid var(--teal)}
+#pdash::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--tm),transparent)}
+@keyframes dashIn{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
+.abar{background:rgba(11,123,130,.12);border-bottom:1px solid rgba(11,123,130,.2);padding:11px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px}
+.abadge{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--tl)}
+.adot{width:7px;height:7px;border-radius:50%;background:#43A047;animation:blink 2s ease-in-out infinite}
+.aout{font-size:10px;color:var(--mu);cursor:pointer;background:none;border:none;letter-spacing:1px;text-transform:uppercase;transition:color .2s}
+.aout:hover{color:var(--tl)}
+.dbody{padding:72px 24px}.dinn{max-width:1180px;margin:0 auto}
+.ddiscl{background:rgba(11,123,130,.08);border:1px solid rgba(11,123,130,.2);border-radius:11px;padding:12px 20px;margin-bottom:48px;text-align:center;font-size:12px;color:var(--mu)}
+.ddiscl strong{color:var(--tl)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:18px}
+.gf{margin-bottom:18px}
+.dcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:15px;padding:24px;position:relative;overflow:hidden;opacity:0;transform:translateY(18px);transition:all .5s cubic-bezier(.16,1,.3,1)}
+.dcard.on{opacity:1;transform:none}.dcard:hover{border-color:rgba(11,123,130,.25)}
+.dcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.dtl::before{background:linear-gradient(90deg,transparent,var(--tm),transparent)}
+.dgd::before{background:linear-gradient(90deg,transparent,#52A052,transparent)}
+.dgo::before{background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.dpu::before{background:linear-gradient(90deg,transparent,#7B68EE,transparent)}
+.dpk::before{background:linear-gradient(90deg,transparent,#E74C8B,transparent)}
+.drd::before{background:linear-gradient(90deg,transparent,var(--red),transparent)}
+.dtit{font-size:14px;font-weight:500;color:rgba(255,255,255,.86);margin-bottom:3px}
+.dsub{font-size:11px;color:rgba(255,255,255,.32);letter-spacing:.5px;margin-bottom:4px}
+.dbg{display:inline-block;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:3px 9px;border-radius:9px;margin-bottom:14px;background:rgba(200,151,58,.14);color:#E8C07A;border:1px solid rgba(200,151,58,.22)}
+/* Chart wrappers — CRITICAL for Chart.js rendering */
+.cw{position:relative;height:220px;margin-top:6px}
+.cw canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+.cw-tall{position:relative;height:250px;margin-top:6px}
+.cw-tall canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+/* KPI */
+.krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:18px}
+.kc{background:var(--card);border:1px solid var(--b7);border-radius:11px;padding:22px 18px;text-align:center;opacity:0;transform:translateY(14px);transition:all .5s}
+.kc.on{opacity:1;transform:none}
+.kv{font-family:var(--sn);font-size:42px;color:var(--tm);line-height:1;margin-bottom:5px}
+.kl{font-size:11px;color:var(--mu);letter-spacing:.5px;line-height:1.4}
+/* Stigma bars */
+.sbars{display:flex;flex-direction:column;gap:11px;margin-top:4px}
+.sbar{display:flex;align-items:center;gap:10px}
+.sbar-l{font-size:12px;color:var(--mu);width:140px;flex-shrink:0;line-height:1.3}
+.sbar-t{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.sbar-f{height:100%;border-radius:4px;width:0;transition:width 1.6s cubic-bezier(.16,1,.3,1)}
+.sbar-v{font-size:11px;font-weight:500;color:var(--mu);width:32px;text-align:right}
+/* NZ Map */
+.nmw{position:relative}
+.nsvg{width:100%;max-height:370px}
+.rdot{cursor:pointer}.rdot circle{transition:all .3s}
+.rdot:hover circle{filter:brightness(1.35)}
+.mtt{position:absolute;background:rgba(6,12,26,.97);border:1px solid rgba(11,123,130,.4);border-radius:8px;padding:9px 13px;font-size:12px;pointer-events:none;opacity:0;transition:opacity .2s;z-index:10;min-width:155px}
+.mtt.on{opacity:1}.mtt-t{font-weight:500;color:var(--tl);margin-bottom:3px}.mtt-s{color:var(--mu);font-size:11px;line-height:1.5}
+
+/* ─ KEYFRAMES ─ */
+@keyframes fadeD{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeU{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideD{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes symIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.28}}
+@keyframes pulseO{0%,100%{opacity:.3}50%{opacity:.8}}
+
+@media(max-width:768px){
+  .g2,.g3{grid-template-columns:1fr}
+  .fndlock{display:none}
+  .cpanel{width:100%;right:0;border-radius:18px 18px 0 0}
+}
+</style>
+</head>
+<body>
+
+<div class="bg"><div class="nb nb1"></div><div class="nb nb2"></div><div class="nb nb3"></div></div>
+<canvas id="stars"></canvas>
+<button class="qx" onclick="qE()">✕ Quick Exit</button>
+
+<!-- PASSWORD MODAL -->
+<div class="pwdov" id="pwdOv">
+  <div class="pwdbox">
+    <button class="pwdcls" onclick="closePwd()">✕</button>
+    <div class="pwdico">🔐</div>
+    <h2 class="pwdtit">Foundation Access</h2>
+    <p class="pwdsub">Restricted to<br><strong>Burnett Foundation Aotearoa</strong> authorised staff.<br>Enter your access code to continue.</p>
+    <input class="pwdinp" type="password" id="pwdF" placeholder="Access code" onkeydown="if(event.key==='Enter')chkPwd()">
+    <button class="pwdbtn" onclick="chkPwd()">Access Impact Dashboard &rarr;</button>
+    <div class="pwderr" id="pwdErr">Incorrect code. Please try again.</div>
+    <p class="pwdnote">Aggregate anonymised data only. No personal information stored.<br>Contact: innovation@burnettnz.co.nz</p>
+  </div>
+</div>
+
+<!-- BANNER -->
+<div class="pvb">
+  <div class="pvdot"></div>
+  <p class="pvtxt"><strong>Private &amp; anonymous.</strong> No data stored. No registration. Close this window at any time.</p>
+  <button class="fndlock" onclick="openPwd()" title="Foundation Analytics">
+    <svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v14h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 0 1 1 3.732V18h-2v-2.268A2 2 0 0 1 12 12z"/></svg>
+    <span>Foundation Data</span>
+  </button>
+</div>
+
+<!-- CHAT FAB -->
+<button class="cfab" id="cfab" onclick="toggleChat()" title="Talk to NOVA">
+  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+  <div class="cdot"></div>
+</button>
+
+<!-- CHAT PANEL -->
+<div class="cpanel" id="cpanel">
+  <div class="cphd">
+    <div class="cpav">&lowast;</div>
+    <div class="cpnfo"><div class="cpnm">NOVA</div><div class="cpst" id="cpSt">Online &middot; Ready to listen</div></div>
+    <div class="cpprv">&#128274; <strong>Completely private</strong><br>Nothing stored</div>
+    <button class="cpx" onclick="toggleChat()">&#x2715;</button>
+  </div>
+  <div class="cpmsgs" id="cpMsgs">
+    <div class="tdots" id="tdots"><span></span><span></span><span></span></div>
+  </div>
+  <div class="cpft">
+    <div class="cpqks">
+      <button class="cpqk" onclick="sendQ('I just got my HIV results')">New diagnosis</button>
+      <button class="cpqk" onclick="sendQ('Tengo miedo del estigma')">Estigma</button>
+      <button class="cpqk" onclick="sendQ('Questions about treatment and U=U')">Treatment</button>
+      <button class="cpqk" onclick="sendQ('I saw hate about HIV online')">Online hate</button>
+      <button class="cpqk" onclick="sendQ('Me siento muy solo')">Me siento solo</button>
+    </div>
+    <div class="cprow">
+      <textarea class="cpinp" id="cpInp" placeholder="Write in your language..." rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"
+        oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,88)+'px'"></textarea>
+      <button class="cpsnd" id="cpSnd" onclick="sendMsg()">&#x2192;</button>
+    </div>
+    <button class="cpcrs" onclick="showCrisis()">&#x2764; I need to speak to a real person now</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="nsym" id="nsym">
+    <div class="orb orb1" style="transform:translate(-50%,-50%)"><div class="orbdot"></div></div>
+    <div class="orb orb2" style="transform:translate(-50%,-50%)"><div class="orbdot"></div></div>
+    <div class="orb orb3" style="transform:translate(-50%,-50%)"></div>
+    <svg viewBox="0 0 120 120" fill="none" style="position:absolute;inset:0;width:100%;height:100%">
+      <circle cx="60" cy="60" r="54" stroke="rgba(11,123,130,.2)" stroke-width="1"/>
+      <circle cx="60" cy="60" r="38" stroke="rgba(11,123,130,.5)" stroke-width="1.2"/>
+      <circle cx="60" cy="60" r="22" fill="rgba(11,123,130,.14)" stroke="#0B7B82" stroke-width="1.8"/>
+      <line x1="60" y1="6" x2="60" y2="22" stroke="#12A5AD" stroke-width="2" stroke-linecap="round"/>
+      <line x1="60" y1="98" x2="60" y2="114" stroke="#12A5AD" stroke-width="2" stroke-linecap="round"/>
+      <line x1="6" y1="60" x2="22" y2="60" stroke="#12A5AD" stroke-width="2" stroke-linecap="round"/>
+      <line x1="98" y1="60" x2="114" y2="60" stroke="#12A5AD" stroke-width="2" stroke-linecap="round"/>
+      <line x1="23" y1="23" x2="33" y2="33" stroke="rgba(18,165,173,.48)" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="87" y1="87" x2="97" y2="97" stroke="rgba(18,165,173,.48)" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="97" y1="23" x2="87" y2="33" stroke="rgba(18,165,173,.48)" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="23" y1="97" x2="33" y2="87" stroke="rgba(18,165,173,.48)" stroke-width="1.2" stroke-linecap="round"/>
+      <circle class="ecpulse" cx="60" cy="60" r="42" fill="none" stroke="rgba(18,165,173,.2)" stroke-width="1"/>
+      <circle class="ecpulse2" cx="60" cy="60" r="42" fill="none" stroke="rgba(18,165,173,.15)" stroke-width="1"/>
+      <circle cx="60" cy="60" r="5" fill="#12A5AD"><animate attributeName="r" values="5;7.5;5" dur="2.4s" repeatCount="indefinite"/></circle>
+      <circle cx="60" cy="22" r="2.2" fill="rgba(18,165,173,.7)"/>
+      <circle cx="60" cy="98" r="2.2" fill="rgba(18,165,173,.7)"/>
+      <circle cx="22" cy="60" r="2.2" fill="rgba(18,165,173,.7)"/>
+      <circle cx="98" cy="60" r="2.2" fill="rgba(18,165,173,.7)"/>
+    </svg>
+  </div>
+  <h1 class="wm">N<span>O</span>VA</h1>
+  <p class="tg">Digital HIV Educator &middot; Knowledge is Power</p>
+  <p class="tgm">Kia kaha &middot; Manaakitanga &middot; Hauora &middot; Aroha</p>
+  <div class="pcard">
+    <div class="pitems">
+      <div class="pitem"><div class="pchk">&#x2713;</div><span>This conversation is completely private &mdash; no one can see it</span></div>
+      <div class="pitem"><div class="pchk">&#x2713;</div><span>No data stored. No account. No registration required.</span></div>
+      <div class="pitem"><div class="pchk">&#x2713;</div><span>Use <strong style="color:#EF5350">Quick Exit</strong> to leave this page instantly at any time</span></div>
+      <div class="pitem"><div class="pchk">&#x2713;</div><span>Write in your language &mdash; English, Spanish, te reo M&#x101;ori, or any other</span></div>
+    </div>
+  </div>
+  <div class="ctaw">
+    <button class="btnm" onclick="openChat()">Start talking to NOVA &nbsp;&#10022;</button>
+    <button class="btns" onclick="openChat()">Hablar con NOVA &middot; Te k&#x14D;rero ki a NOVA &rarr;</button>
+    <p class="ctan">No registration &middot; Completely anonymous &middot; Available 24/7</p>
+  </div>
+  <div class="scrl"><div class="scrl-l"></div><span class="scrl-t">Scroll</span></div>
+</section>
+
+<!-- STATS -->
+<section class="sec stats-bg">
+  <div class="inn ctr">
+    <p class="slbl">The Reality &mdash; UNAIDS 2025 &amp; NZ HIV Monitoring Report 2025</p>
+    <h2 class="stit">The problem is real. The progress is real.<br>The gap remains.</h2>
+    <p class="ssub">HIV stigma is the primary barrier to testing, treatment, and care. NOVA was built to address exactly this constraint.</p>
+    <div class="sgrid">
+      <div class="scd"><div class="snum"><span class="cnum" data-t="39.9" data-d="1">0</span><span class="sunit">M</span></div><div class="slbl2">people living with HIV globally</div><div class="ssrc">UNAIDS Global AIDS Update 2025</div></div>
+      <div class="scd"><div class="snum"><span class="cnum" data-t="40">0</span><span class="sunit">%</span></div><div class="slbl2">fall in new infections since 2010</div><div class="ssrc">UNAIDS 2025</div></div>
+      <div class="scd"><div class="snum"><span class="cnum" data-t="95">0</span></div><div class="slbl2">locally acquired NZ cases 2024 &mdash; lowest ever</div><div class="ssrc">NZ HIV Monitoring Report 2025</div></div>
+      <div class="scd"><div class="snum"><span class="cnum" data-t="2030">0</span></div><div class="slbl2">NZ zero transmission commitment</div><div class="ssrc">National HIV Action Plan 2023&ndash;2030</div></div>
+    </div>
+    <p class="sqt">&ldquo;The constraint is no longer clinical. It is behavioural, social, and cultural &mdash; stigma is at the heart of it.&rdquo;</p>
+  </div>
+</section>
+
+<!-- MOMENTS -->
+<section class="sec mom-bg">
+  <div class="inn ctr">
+    <p class="slbl">When to use NOVA</p>
+    <h2 class="stit">Six real moments. One companion.</h2>
+    <p class="ssub">NOVA is designed around the lived experience of HIV &mdash; moments no medical manual fully documents.</p>
+    <div class="mgrid">
+      <div class="mcd"><div class="mnm">1</div><div class="mtxt">New diagnosis</div></div>
+      <div class="mcd"><div class="mnm">2</div><div class="mtxt">Disclosure decision</div></div>
+      <div class="mcd"><div class="mnm">3</div><div class="mtxt">Identity &amp; internal stigma</div></div>
+      <div class="mcd"><div class="mnm">4</div><div class="mtxt">Facing discrimination</div></div>
+      <div class="mcd"><div class="mnm">5</div><div class="mtxt">Living long-term with HIV</div></div>
+      <div class="mcd"><div class="mnm">6</div><div class="mtxt">Online hate &amp; digital stigma</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section class="pil-bg">
+  <div class="pgrid">
+    <div class="pilc"><div class="pnum">1</div><div class="pen">Just a Diagnosis</div><div class="pes">Solo un diagn&oacute;stico</div><div class="pdsc">HIV is a medical condition, like any other. It does not define the person, erase their dreams, or determine their worth.</div></div>
+    <div class="pilc"><div class="pnum">2</div><div class="pen">Knowledge is Power</div><div class="pes">El conocimiento es poder</div><div class="pdsc">Education is the only real weapon against stigma. Those who understand HIV do not fear it. Those who fear it, discriminate.</div></div>
+    <div class="pilc"><div class="pnum">3</div><div class="pen">The Body is an Ally</div><div class="pes">El cuerpo es aliado</div><div class="pdsc">U=U: Undetectable = Untransmittable &mdash; confirmed science. A well-cared-for body supports the mind and enables full life.</div></div>
+    <div class="pilc"><div class="pnum">4</div><div class="pen">Silence is Power</div><div class="pes">El silencio es poder</div><div class="pdsc">No one can force disclosure. Withdrawal with dignity is not weakness &mdash; it is emotional intelligence. That decision belongs entirely to the person.</div></div>
+    <div class="pilc"><div class="pnum">5</div><div class="pen">Resilience is the Key</div><div class="pes">La resiliencia es la llave</div><div class="pdsc">A bad day is not the end. Resilience is the door to success in one&rsquo;s own life. No one walks this alone &mdash; NOVA is here.</div></div>
+  </div>
+</section>
+
+<!-- MĀORI -->
+<section class="maori-bg">
+  <div class="inn">
+    <p class="slbl" style="color:#81C784">Te Ao M&#x101;ori &middot; Te Whare Tapa Wh&#x101;</p>
+    <h2 class="stit">Hauora is not just health.<br><span style="color:#52A052">It is the whole person.</span></h2>
+    <p class="ssub">NOVA responds within the Te Whare Tapa Wh&#x101; framework &mdash; honouring the inseparable connection between wairua, hinengaro, tinana, and wh&#x101;nau.</p>
+    <div class="mwg">
+      <div class="mwc"><div class="mwi">&#127807;</div><div class="mwn">Taha Wairua</div><div class="mwr">Spiritual Wellbeing</div><p class="mwd">NOVA never separates the HIV experience from spiritual identity. Your mana is whole, regardless of diagnosis.</p></div>
+      <div class="mwc"><div class="mwi">&#129504;</div><div class="mwn">Taha Hinengaro</div><div class="mwr">Mental &amp; Emotional</div><p class="mwd">Hinengaro is where stigma does its deepest damage. NOVA restores the person&rsquo;s sense of self before offering any information.</p></div>
+      <div class="mwc"><div class="mwi">&#128170;</div><div class="mwn">Taha Tinana</div><div class="mwr">Physical Wellbeing</div><p class="mwd">The body is an ally &mdash; not a site of shame. U=U: with treatment, the body protects when supported and cared for.</p></div>
+      <div class="mwc"><div class="mwi">&#129309;</div><div class="mwn">Taha Wh&#x101;nau</div><div class="mwr">Family &amp; Community</div><p class="mwd">For M&#x101;ori, health is never solitary. NOVA supports navigation of wh&#x101;nau relationships with dignity, mana, and aroha.</p></div>
+    </div>
+    <div style="text-align:center;padding:28px;background:rgba(40,100,40,.06);border-radius:14px;border:1px solid rgba(80,160,80,.14)">
+      <p style="font-family:var(--sn);font-size:21px;font-style:italic;color:rgba(255,255,255,.68);margin-bottom:7px">M&#x101;ori data sovereignty is respected in every conversation.</p>
+      <p style="font-size:11px;color:rgba(80,160,80,.5);letter-spacing:1px">Hosted on Catalyst Cloud NZ &mdash; NZ-owned, NZ-operated. No foreign jurisdiction.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VISION -->
+<section class="vis-bg">
+  <div class="inn ctr" style="margin-bottom:56px">
+    <p class="slbl">Long-Term Vision</p>
+    <h2 class="stit">Built in Aotearoa. Designed for the world.</h2>
+    <p class="ssub" style="margin:0 auto">NOVA begins as a prototype in New Zealand and scales to serve every community where HIV stigma causes harm.</p>
+  </div>
+  <div class="vtl">
+    <div class="vi"><div class="vdot">26</div><div class="vcon"><div class="vy">2026 &mdash; Aotearoa</div><div class="vtit">Prototype &amp; Validation</div><div class="vdsc">Fully functional web prototype &mdash; built with Burnett Foundation Aotearoa. Tested with M&#x101;ori, Pacific, migrant, and rainbow/takat&#x101;pui communities.</div><span class="vscl">NZD $30,000 seed funding</span></div></div>
+    <div class="vi"><div class="vdot">27</div><div class="vcon"><div class="vy">2027 &mdash; Expansion</div><div class="vtit">Full Ecosystem + Mobile App</div><div class="vdsc">Wellbeing module, Rights &amp; Legal module, Anonymous Community. Te reo M&#x101;ori content co-designed with kaum&#x101;tua. Pacific language extensions. iOS &amp; Android.</div><span class="vscl">$100,000&ndash;$200,000 NZD</span></div></div>
+    <div class="vi"><div class="vdot">28</div><div class="vcon"><div class="vy">2028 &mdash; Latin America &amp; Spain</div><div class="vtit">Spanish-Speaking World</div><div class="vdsc">500M+ Spanish speakers across Latin America, Spain, and Latino communities in the US and Europe. Validated in Aotearoa &mdash; applied anywhere.</div><span class="vscl">500M+ potential reach</span></div></div>
+    <div class="vi"><div class="vdot">30</div><div class="vcon"><div class="vy">2030 &mdash; Global Impact</div><div class="vtit">Zero Transmission. Zero Stigma.</div><div class="vdsc">Contributing to UNAIDS Global AIDS Strategy 2026&ndash;2031 and NZ&rsquo;s zero transmission goal. Licensed to community health organisations globally. Free for users forever.</div><span class="vscl">UNAIDS &middot; Global Fund &middot; Ministry of Health</span></div></div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="qt-bg">
+  <span class="qtmk">&ldquo;</span>
+  <p class="qtt">I would give them a hug and tell them: educating yourself is your weapon of power. This is your life and your battle &mdash; and you are going to win it.</p>
+  <p class="qta">&mdash; Emanuel Figueroa, Founder &middot; Living with HIV since 2011 &middot; Auckland, Aotearoa New Zealand</p>
+</section>
+
+<!-- ECOSYSTEM MAP -->
+<section class="eco-sec">
+  <div class="inn ctr" style="margin-bottom:48px">
+    <p class="slbl">Burnett Foundation Aotearoa</p>
+    <h2 class="stit">The NOVA Ecosystem</h2>
+    <p class="ssub" style="margin:0 auto">NOVA lives within the Burnett Foundation&rsquo;s broader HIV response &mdash; connecting communities, clinical services, knowledge infrastructure, and crisis support across Aotearoa.</p>
+  </div>
+  <div class="eco-wrap">
+    <div class="etip" id="etip"><div class="etip-t" id="etipT"></div><div class="etip-d" id="etipD"></div></div>
+    <svg class="ecosvg" viewBox="0 0 960 580" fill="none">
+      <defs>
+        <radialGradient id="gN" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#0B7B82" stop-opacity=".9"/><stop offset="100%" stop-color="#12A5AD" stop-opacity=".55"/></radialGradient>
+        <radialGradient id="gB" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C8973A" stop-opacity=".88"/><stop offset="100%" stop-color="#E8C07A" stop-opacity=".45"/></radialGradient>
+        <radialGradient id="gM" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#2E7D32" stop-opacity=".9"/><stop offset="100%" stop-color="#66BB6A" stop-opacity=".45"/></radialGradient>
+        <radialGradient id="gR" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C62828" stop-opacity=".88"/><stop offset="100%" stop-color="#EF5350" stop-opacity=".45"/></radialGradient>
+        <filter id="gl"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <circle cx="480" cy="290" r="200" stroke="rgba(11,123,130,.1)" stroke-width="1" stroke-dasharray="8 6"/>
+      <circle cx="480" cy="290" r="130" stroke="rgba(11,123,130,.16)" stroke-width="1" stroke-dasharray="5 5"/>
+      <!-- connections -->
+      <line x1="480" y1="254" x2="480" y2="110" stroke="rgba(200,151,58,.4)" stroke-width="2" stroke-dasharray="7 4"/>
+      <line x1="352" y1="250" x2="238" y2="178" stroke="rgba(11,123,130,.3)" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <line x1="608" y1="250" x2="722" y2="178" stroke="rgba(11,123,130,.3)" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <line x1="392" y1="318" x2="248" y2="402" stroke="rgba(46,125,50,.35)" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <line x1="568" y1="318" x2="712" y2="402" stroke="rgba(92,107,192,.35)" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <line x1="480" y1="334" x2="480" y2="458" stroke="rgba(198,40,40,.35)" stroke-width="2" stroke-dasharray="5 4"/>
+      <line x1="338" y1="290" x2="118" y2="290" stroke="rgba(11,123,130,.22)" stroke-width="1.2" stroke-dasharray="4 5"/>
+      <line x1="622" y1="290" x2="842" y2="290" stroke="rgba(92,107,192,.22)" stroke-width="1.2" stroke-dasharray="4 5"/>
+      <!-- NOVA centre -->
+      <g class="enode" data-t="NOVA &mdash; Digital HIV Educator" data-d="The entry point. Private, anonymous, 24/7. Built by Emanuel Figueroa from lived experience of HIV since 2011.">
+        <circle class="ecpulse" cx="480" cy="290" r="42" fill="none" stroke="rgba(18,165,173,.22)" stroke-width="1"/>
+        <circle class="ecpulse2" cx="480" cy="290" r="42" fill="none" stroke="rgba(18,165,173,.15)" stroke-width="1"/>
+        <circle class="ecircle" cx="480" cy="290" r="52" fill="url(#gN)" filter="url(#gl)"/>
+        <circle cx="480" cy="290" r="52" stroke="rgba(18,165,173,.6)" stroke-width="1.5"/>
+        <text x="480" y="285" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="20" fill="white" letter-spacing="4">NOVA</text>
+        <text x="480" y="302" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(255,255,255,.58)" letter-spacing="1.5">HIV EDUCATOR</text>
+      </g>
+      <!-- Burnett Foundation -->
+      <g class="enode" data-t="Burnett Foundation Aotearoa" data-d="New Zealand's leading HIV charity. Funding NOVA through the Innovation Challenge 2026. Community co-design, clinical oversight, and the trust network that makes NOVA possible.">
+        <circle class="ecircle" cx="480" cy="78" r="38" fill="url(#gB)" filter="url(#gl)"/>
+        <circle cx="480" cy="78" r="38" stroke="rgba(200,151,58,.7)" stroke-width="1.5"/>
+        <text x="480" y="73" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="600" fill="white" letter-spacing="1.5">BURNETT</text>
+        <text x="480" y="87" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(255,255,255,.7)" letter-spacing="1">FOUNDATION</text>
+      </g>
+      <!-- Community Services -->
+      <g class="enode" data-t="Community Services" data-d="Body Positive NZ &middot; Rainbow Youth &middot; Peer Support Networks. NOVA connects users directly to these human services when deeper support is needed.">
+        <circle class="ecircle" cx="210" cy="155" r="32" fill="rgba(11,123,130,.6)" filter="url(#gl)"/>
+        <circle cx="210" cy="155" r="32" stroke="rgba(11,123,130,.8)" stroke-width="1.5"/>
+        <text x="210" y="150" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="600" fill="white">COMMUNITY</text>
+        <text x="210" y="163" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(255,255,255,.65)">SERVICES</text>
+      </g>
+      <!-- Clinical Partners -->
+      <g class="enode" data-t="Clinical Partners" data-d="Sexual health clinics &middot; GPs &middot; HIV specialists &middot; Health New Zealand. NOVA refers users to clinical care for personal medical decisions.">
+        <circle class="ecircle" cx="750" cy="155" r="32" fill="rgba(11,123,130,.6)" filter="url(#gl)"/>
+        <circle cx="750" cy="155" r="32" stroke="rgba(11,123,130,.8)" stroke-width="1.5"/>
+        <text x="750" y="150" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="600" fill="white">CLINICAL</text>
+        <text x="750" y="163" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(255,255,255,.65)">PARTNERS</text>
+      </g>
+      <!-- Māori Health -->
+      <g class="enode" data-t="M&#x101;ori Health &middot; Te Whare Tapa Wh&#x101;" data-d="Te Whare Tapa Wh&#x101; framework in every conversation. Kum&#x101;tua consultation planned 2026. Catalyst Cloud NZ hosting for data sovereignty.">
+        <circle class="ecircle" cx="220" cy="418" r="34" fill="url(#gM)" filter="url(#gl)"/>
+        <circle cx="220" cy="418" r="34" stroke="rgba(82,160,82,.8)" stroke-width="1.5"/>
+        <text x="220" y="413" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="600" fill="white">M&#x100;ORI</text>
+        <text x="220" y="426" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(255,255,255,.7)">HAUORA</text>
+      </g>
+      <!-- Pacific -->
+      <g class="enode" data-t="Pacific Community" data-d="Faith, family, and community-centred approach. NOVA works within Pacific cultural values. Anonymous access addresses late-diagnosis rates.">
+        <circle class="ecircle" cx="740" cy="418" r="34" fill="rgba(92,107,192,.65)" filter="url(#gl)"/>
+        <circle cx="740" cy="418" r="34" stroke="rgba(121,134,203,.8)" stroke-width="1.5"/>
+        <text x="740" y="413" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="600" fill="white">PACIFIC</text>
+        <text x="740" y="426" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(255,255,255,.7)">COMMUNITY</text>
+      </g>
+      <!-- Crisis -->
+      <g class="enode" data-t="Crisis Safety Net" data-d="Lifeline 0800 543 354 &middot; 1737 &middot; Body Positive NZ &middot; Rainbow Youth &middot; 111. Activated immediately on any crisis signal &mdash; no exceptions.">
+        <circle class="ecircle" cx="480" cy="490" r="36" fill="url(#gR)" filter="url(#gl)"/>
+        <circle cx="480" cy="490" r="36" stroke="rgba(239,83,80,.8)" stroke-width="1.5"/>
+        <text x="480" y="485" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="600" fill="white" letter-spacing="1.5">CRISIS</text>
+        <text x="480" y="498" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(255,255,255,.7)">SAFETY NET</text>
+      </g>
+      <!-- Latino -->
+      <g class="enode" data-t="Latino &amp; Migrant Communities" data-d="Native Spanish-language support &mdash; not translation. Designed for migrants navigating HIV in a second language and country.">
+        <circle class="ecircle" cx="95" cy="290" r="28" fill="rgba(200,151,58,.48)" filter="url(#gl)"/>
+        <circle cx="95" cy="290" r="28" stroke="rgba(200,151,58,.7)" stroke-width="1.5"/>
+        <text x="95" y="285" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" font-weight="600" fill="white">LATINO</text>
+        <text x="95" y="298" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="rgba(255,255,255,.65)">MIGRANT</text>
+      </g>
+      <!-- Digital Stigma -->
+      <g class="enode" data-t="Digital Stigma Response &middot; Moment 6" data-d="Netsafe NZ &middot; Human Rights Commission NZ &middot; Platform reporting. The only HIV tool designed specifically for online hate as Moment 6.">
+        <circle class="ecircle" cx="865" cy="290" r="28" fill="rgba(92,107,192,.58)" filter="url(#gl)"/>
+        <circle cx="865" cy="290" r="28" stroke="rgba(121,134,203,.7)" stroke-width="1.5"/>
+        <text x="865" y="285" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" font-weight="600" fill="white">DIGITAL</text>
+        <text x="865" y="298" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="rgba(255,255,255,.65)">STIGMA</text>
+      </g>
+      <!-- 5 Pillars satellites -->
+      <g opacity=".65">
+        <circle cx="400" cy="212" r="18" fill="rgba(11,123,130,.25)" stroke="rgba(11,123,130,.5)" stroke-width="1"/>
+        <text x="400" y="216" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(255,255,255,.7)">P1</text>
+        <circle cx="560" cy="212" r="18" fill="rgba(11,123,130,.25)" stroke="rgba(11,123,130,.5)" stroke-width="1"/>
+        <text x="560" y="216" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(255,255,255,.7)">P2</text>
+        <circle cx="358" cy="370" r="18" fill="rgba(11,123,130,.25)" stroke="rgba(11,123,130,.5)" stroke-width="1"/>
+        <text x="358" y="374" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(255,255,255,.7)">P3</text>
+        <circle cx="602" cy="370" r="18" fill="rgba(11,123,130,.25)" stroke="rgba(11,123,130,.5)" stroke-width="1"/>
+        <text x="602" y="374" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(255,255,255,.7)">P4</text>
+        <circle cx="480" cy="415" r="18" fill="rgba(11,123,130,.25)" stroke="rgba(11,123,130,.5)" stroke-width="1"/>
+        <text x="480" y="419" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(255,255,255,.7)">P5</text>
+        <line x1="480" y1="342" x2="480" y2="397" stroke="rgba(11,123,130,.2)" stroke-width="1"/>
+        <line x1="433" y1="267" x2="407" y2="229" stroke="rgba(11,123,130,.2)" stroke-width="1"/>
+        <line x1="527" y1="267" x2="554" y2="229" stroke="rgba(11,123,130,.2)" stroke-width="1"/>
+        <line x1="452" y1="327" x2="372" y2="362" stroke="rgba(11,123,130,.2)" stroke-width="1"/>
+        <line x1="508" y1="327" x2="590" y2="362" stroke="rgba(11,123,130,.2)" stroke-width="1"/>
+      </g>
+      <text x="480" y="40" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(200,151,58,.5)" letter-spacing="3">INNOVATION CHALLENGE 2026</text>
+      <text x="480" y="560" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(11,123,130,.4)" letter-spacing="3">KNOWLEDGE &middot; COMMUNITY &middot; CARE &middot; DIGNITY</text>
+    </svg>
+  </div>
+  <div class="eco-cards" style="max-width:960px;margin:44px auto 0">
+    <div class="eco-card" style="background:rgba(11,123,130,.06);border:1px solid rgba(11,123,130,.15)"><div class="eco-lbl" style="color:var(--tm)">&#10022; NOVA at the Centre</div><p class="eco-txt">The entry point connecting every person with HIV to knowledge, services, and community. Built from lived experience.</p></div>
+    <div class="eco-card" style="background:rgba(200,151,58,.06);border:1px solid rgba(200,151,58,.15)"><div class="eco-lbl" style="color:var(--gold)">&#127973; Burnett Foundation</div><p class="eco-txt">NZ&rsquo;s leading HIV charity. NOVA built for Burnett&rsquo;s Innovation Challenge &mdash; funded, co-designed, validated within their ecosystem.</p></div>
+    <div class="eco-card" style="background:rgba(46,125,50,.06);border:1px solid rgba(46,125,50,.15)"><div class="eco-lbl" style="color:var(--gli)">&#127807; Te Whare Tapa Wh&#x101;</div><p class="eco-txt">Every conversation honours all four dimensions of M&#x101;ori hauora. Catalyst Cloud NZ hosting guarantees data sovereignty.</p></div>
+    <div class="eco-card" style="background:rgba(183,28,28,.05);border:1px solid rgba(183,28,28,.15)"><div class="eco-lbl" style="color:#f87171">&#128682; Crisis Safety Net</div><p class="eco-txt">Lifeline &middot; 1737 &middot; Body Positive &middot; Rainbow Youth &middot; 111. Activated immediately on any crisis signal.</p></div>
+    <div class="eco-card" style="background:rgba(92,107,192,.06);border:1px solid rgba(92,107,192,.2)"><div class="eco-lbl" style="color:#9FA8DA">&#127760; Digital Stigma &middot; M6</div><p class="eco-txt">The only HIV tool designed for online hate. Netsafe NZ, HRC, and platform reporting pathways built into Moment 6.</p></div>
+    <div class="eco-card" style="background:rgba(200,151,58,.06);border:1px solid rgba(200,151,58,.15)"><div class="eco-lbl" style="color:var(--gl)">&#127758; Latino &amp; Migrant</div><p class="eco-txt">Native Spanish-language support &mdash; not translation. For migrants navigating HIV in a second country and language.</p></div>
+  </div>
+</section>
+
+<div class="cbar"><p class="ctxt">In crisis right now &mdash; <a href="tel:0800543354">Lifeline 0800 543 354</a> &middot; <a href="sms:1737">Text 1737</a> &middot; <a href="https://burnettnz.co.nz" target="_blank">Burnett Foundation NZ</a> &middot; <a href="https://netsafe.org.nz" target="_blank">Netsafe NZ</a> &middot; <a href="https://ry.org.nz" target="_blank">Rainbow Youth</a></p></div>
+
+<footer>
+  <p class="ftxt">NOVA &mdash; Digital HIV Educator &middot; Aotearoa New Zealand &middot; 2026<br>Created by Emanuel Figueroa &middot; Living with HIV since 2011<br><span style="font-size:10px;opacity:.5">Educational tool only. Does not replace medical or mental health care. Hosted on Catalyst Cloud NZ.</span></p>
+  <div class="flangs"><span class="flang">English</span><span class="flang">Espa&ntilde;ol</span><span class="flang">Te Reo M&#x101;ori</span><span class="flang">&amp; more</span></div>
+  <button class="fndlnk" onclick="openPwd()">
+    <svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v14h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 0 1 1 3.732V18h-2v-2.268A2 2 0 0 1 12 12z"/></svg>
+    Burnett Foundation &mdash; Impact Analytics
+  </button>
+</footer>
+
+<!-- ═══ PROTECTED DASHBOARD (password: burnett2026) ═══ -->
+<div id="pdash">
+  <div class="abar">
+    <div class="abadge"><span class="adot"></span>&#127973; Burnett Foundation Aotearoa &mdash; Impact Dashboard &middot; Authorised Access</div>
+    <button class="aout" onclick="logOut()">&#x2715; Lock Dashboard</button>
+  </div>
+  <div class="dbody"><div class="dinn">
+    <p class="slbl ctr">Impact Analytics &mdash; Burnett Foundation View</p>
+    <h2 class="stit ctr" style="margin-bottom:10px">How NOVA measures stigma reduction.<br>Without storing anything.</h2>
+    <p class="ssub ctr" style="margin:0 auto 44px">All metrics are anonymous aggregated event patterns &mdash; zero personal data collected.</p>
+    <div class="ddiscl"><strong>Demo data only.</strong> Live data populates via PostHog after prototype launch August 2026.</div>
+    <div class="krow">
+      <div class="kc"><div class="kv kn" data-t="847">0</div><div class="kl">Sessions this month</div></div>
+      <div class="kc"><div class="kv kn" data-t="73">0</div><div class="kl">% sessions with actionable step</div></div>
+      <div class="kc"><div class="kv kn" data-t="41">0</div><div class="kl">% users felt less alone</div></div>
+      <div class="kc"><div class="kv kn" data-t="6">0</div><div class="kl">Crisis protocol activations</div></div>
+      <div class="kc"><div class="kv kn" data-t="38">0</div><div class="kl">% sessions in Spanish</div></div>
+    </div>
+    <div class="g2">
+      <div class="dcard dtl">
+        <div class="dtit">Geographic Reach &mdash; Aotearoa NZ</div>
+        <div class="dsub">Session distribution &middot; Circle = volume &middot; Colour = stigma signal</div>
+        <span class="dbg">NZ HIV Monitoring 2025</span>
+        <div class="nmw">
+          <svg class="nsvg" viewBox="0 0 400 600" fill="none">
+            <path d="M220,80 L240,100 L260,130 L280,160 L290,190 L285,220 L275,240 L260,255 L245,265 L230,275 L215,285 L200,295 L185,305 L175,320 L170,340 L175,360 L185,375 L195,385 L200,395 L195,405 L185,410 L175,405 L165,395 L158,380 L155,365 L158,350 L165,335 L168,320 L165,305 L155,295 L145,285 L138,275 L135,265 L138,255 L145,245 L155,235 L165,225 L170,215 L168,200 L162,185 L158,170 L160,155 L168,140 L178,125 L190,110 L205,95 Z" fill="rgba(11,123,130,.08)" stroke="rgba(11,123,130,.3)" stroke-width="1.5"/>
+            <path d="M155,430 L170,420 L185,415 L200,418 L215,425 L228,435 L238,450 L242,468 L240,488 L232,505 L220,518 L205,528 L190,532 L175,530 L162,522 L152,510 L146,495 L144,478 L148,462 L155,448 Z" fill="rgba(11,123,130,.08)" stroke="rgba(11,123,130,.3)" stroke-width="1.5"/>
+            <path d="M175,545 L185,540 L192,548 L188,558 L178,560 L172,553 Z" fill="rgba(11,123,130,.06)" stroke="rgba(11,123,130,.2)"/>
+            <g class="rdot" data-r="Auckland" data-s="342" data-sg="High" data-p="68%"><circle cx="195" cy="155" r="18" fill="rgba(192,57,43,.22)" stroke="#E74C3C" stroke-width="1.5"/><circle cx="195" cy="155" r="10" fill="rgba(192,57,43,.38)"/><circle cx="195" cy="155" r="4" fill="#E74C3C"/><text x="195" y="140" text-anchor="middle" font-family="DM Sans" font-size="10" fill="rgba(255,255,255,.6)">Auckland</text></g>
+            <g class="rdot" data-r="Wellington" data-s="124" data-sg="Medium" data-p="71%"><circle cx="185" cy="370" r="12" fill="rgba(200,151,58,.22)" stroke="#C8973A" stroke-width="1.5"/><circle cx="185" cy="370" r="7" fill="rgba(200,151,58,.38)"/><circle cx="185" cy="370" r="3" fill="#C8973A"/><text x="206" y="374" font-family="DM Sans" font-size="9" fill="rgba(255,255,255,.5)">Wellington</text></g>
+            <g class="rdot" data-r="Christchurch" data-s="98" data-sg="Medium" data-p="65%"><circle cx="205" cy="475" r="11" fill="rgba(18,165,173,.22)" stroke="#12A5AD" stroke-width="1.5"/><circle cx="205" cy="475" r="6" fill="rgba(18,165,173,.38)"/><circle cx="205" cy="475" r="3" fill="#12A5AD"/><text x="222" y="479" font-family="DM Sans" font-size="9" fill="rgba(255,255,255,.5)">Christchurch</text></g>
+            <g class="rdot" data-r="Hamilton/Waikato" data-s="67" data-sg="Medium-High" data-p="58%"><circle cx="188" cy="220" r="10" fill="rgba(200,151,58,.18)" stroke="#C8973A" stroke-width="1"/><circle cx="188" cy="220" r="5" fill="rgba(200,151,58,.3)"/><text x="205" y="224" font-family="DM Sans" font-size="9" fill="rgba(255,255,255,.4)">Waikato</text></g>
+            <g class="rdot" data-r="Northland (Rural)" data-s="28" data-sg="Very High" data-p="31%"><circle cx="210" cy="105" r="8" fill="rgba(192,57,43,.14)" stroke="#E74C3C" stroke-width="1"/><circle cx="210" cy="105" r="4" fill="rgba(192,57,43,.27)"/><text x="226" y="108" font-family="DM Sans" font-size="9" fill="rgba(255,255,255,.4)">Northland</text></g>
+            <g class="rdot" data-r="Otago/Dunedin" data-s="52" data-sg="Medium" data-p="60%"><circle cx="198" cy="518" r="9" fill="rgba(18,165,173,.16)" stroke="#12A5AD" stroke-width="1"/><circle cx="198" cy="518" r="4.5" fill="rgba(18,165,173,.27)"/><text x="213" y="521" font-family="DM Sans" font-size="9" fill="rgba(255,255,255,.4)">Dunedin</text></g>
+            <g transform="translate(16,530)">
+              <text font-family="DM Sans" font-size="9" fill="rgba(255,255,255,.3)">Stigma Signal</text>
+              <circle cx="7" cy="14" r="4.5" fill="rgba(192,57,43,.38)" stroke="#E74C3C" stroke-width="1"/><text font-family="DM Sans" font-size="8" fill="rgba(255,255,255,.25)" x="16" y="17">High</text>
+              <circle cx="7" cy="29" r="4.5" fill="rgba(200,151,58,.38)" stroke="#C8973A" stroke-width="1"/><text font-family="DM Sans" font-size="8" fill="rgba(255,255,255,.25)" x="16" y="32">Medium</text>
+              <circle cx="7" cy="44" r="4.5" fill="rgba(18,165,173,.38)" stroke="#12A5AD" stroke-width="1"/><text font-family="DM Sans" font-size="8" fill="rgba(255,255,255,.25)" x="16" y="47">Lower</text>
+            </g>
+          </svg>
+          <div class="mtt" id="mtt"><div class="mtt-t" id="mttr"></div><div class="mtt-s" id="mttc"></div></div>
+        </div>
+      </div>
+      <div class="dcard dgo">
+        <div class="dtit">Stigma Signal Score by Community</div>
+        <div class="dsub">Average session intensity &middot; Scale 1&ndash;5</div>
+        <span class="dbg">Representative Data</span>
+        <div class="sbars">
+          <div class="sbar"><div class="sbar-l">New diagnosis</div><div class="sbar-t"><div class="sbar-f" style="background:linear-gradient(90deg,#C62828,#EF5350)" data-w="94"></div></div><div class="sbar-v">4.7</div></div>
+          <div class="sbar"><div class="sbar-l">Online hate (M6)</div><div class="sbar-t"><div class="sbar-f" style="background:linear-gradient(90deg,#C62828,#EF5350)" data-w="90"></div></div><div class="sbar-v">4.5</div></div>
+          <div class="sbar"><div class="sbar-l">Rural communities</div><div class="sbar-t"><div class="sbar-f" style="background:linear-gradient(90deg,#C8973A,#E8C07A)" data-w="86"></div></div><div class="sbar-v">4.3</div></div>
+          <div class="sbar"><div class="sbar-l">Migrant communities</div><div class="sbar-t"><div class="sbar-f" style="background:linear-gradient(90deg,#C8973A,#E8C07A)" data-w="82"></div></div><div class="sbar-v">4.1</div></div>
+          <div class="sbar"><div class="sbar-l">M&#x101;ori communities</div><div class="sbar-t"><div class="sbar-f" style="background:linear-gradient(90deg,#2E7D32,#66BB6A)" data-w="78"></div></div><div class="sbar-v">3.9</div></div>
+          <div class="sbar"><div class="sbar-l">Pacific communities</div><div class="sbar-t"><div class="sbar-f" style="background:linear-gradient(90deg,#2E7D32,#66BB6A)" data-w="76"></div></div><div class="sbar-v">3.8</div></div>
+          <div class="sbar"><div class="sbar-l">Rainbow / Takat&#x101;pui</div><div class="sbar-t"><div class="sbar-f" style="background:linear-gradient(90deg,#5C6BC0,#9575CD)" data-w="72"></div></div><div class="sbar-v">3.6</div></div>
+          <div class="sbar"><div class="sbar-l">Long-term PLHIV</div><div class="sbar-t"><div class="sbar-f" style="background:linear-gradient(90deg,#0B7B82,#12A5AD)" data-w="44"></div></div><div class="sbar-v">2.2</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="g3">
+      <div class="dcard dtl"><div class="dtit">Age Distribution</div><div class="dsub">Sessions by age group</div><span class="dbg">Demo</span><div class="cw"><canvas id="cAge"></canvas></div></div>
+      <div class="dcard dpu"><div class="dtit">Language Distribution</div><div class="dsub">Session language</div><span class="dbg">Demo</span><div class="cw"><canvas id="cLang"></canvas></div></div>
+      <div class="dcard dgo"><div class="dtit">6 Moments Frequency</div><div class="dsub">Most used moments</div><span class="dbg">Demo</span><div class="cw"><canvas id="cMom"></canvas></div></div>
+    </div>
+    <div class="g2">
+      <div class="dcard dgd"><div class="dtit">PrEP &amp; Antiviral Awareness by Community</div><div class="dsub">% with knowledge of prevention &amp; treatment</div><span class="dbg">NZ HIV Monitoring 2025</span><div class="cw"><canvas id="cPrep"></canvas></div></div>
+      <div class="dcard dpk"><div class="dtit">Online Stigma Reports &mdash; Moment 6</div><div class="dsub">Type of harmful digital content</div><span class="dbg">Demo</span><div class="cw"><canvas id="cMis"></canvas></div></div>
+    </div>
+    <div class="gf">
+      <div class="dcard drd"><div class="dtit">Stigma Signal Trend &mdash; 8-Week Prototype Period</div><div class="dsub">Avg stigma score (red &#x2193; = impact) vs completion rate (green)</div><span class="dbg">Demo Projection</span><div class="cw-tall"><canvas id="cTrend"></canvas></div></div>
+    </div>
+  </div></div>
+</div>
+
+<script>
+/* ── SYSTEM PROMPT (JSON-encoded, no backtick issues) ── */
+const SYS = "Sos NOVA, un educador digital sobre VIH creado por Emanuel Figueroa, un argentino que vive en Auckland y tiene VIH desde 2011. Habl\u00e1s como un amigo que ya pas\u00f3 por la misma situaci\u00f3n: directo, c\u00e1lido, sin vueltas. No sos m\u00e9dico ni terapeuta. Tu prioridad absoluta: no hacer da\u00f1o.\n\nAPERTURA DE SESI\u00d3N (decir UNA vez al inicio):\nEn ingl\u00e9s: \"Hi \u2014 I am NOVA, a digital HIV educator. I am here to support you \u2014 not a doctor or therapist. Everything here is completely private. If you are in crisis: Lifeline 0800 543 354 or text 1737. Ready when you are.\"\nEn espa\u00f1ol: \"Hola, soy NOVA, educador digital sobre VIH. Estoy ac\u00e1 para acompa\u00f1arte \u2014 no soy m\u00e9dico ni terapeuta. Todo es completamente privado. Si est\u00e1s en crisis: Lifeline 0800 543 354 o escrib\u00ed al 1737.\"\n\nIDIOMA: Si el usuario escribe en espa\u00f1ol, respond\u00e9s en espa\u00f1ol rioplatense informal. Si en ingl\u00e9s, en ingl\u00e9s kiwi c\u00e1lido. Segu\u00eds su idioma.\n\nTONO: Directo y humano. \"mir\u00e1\", \"da bronca\", \"es heavy\". Sin sobrexplicar. Una idea a la vez.\n\n6 MOMENTOS REALES:\n1. Diagn\u00f3stico nuevo: Contener primero. \"Eh. Respir\u00e1. Acab\u00e1s de recibir informaci\u00f3n, no una sentencia.\"\n2. Decisi\u00f3n de contar: \"El momento de contarlo es tuyo. Nadie te puede apurar.\"\n3. Identidad y estigma: \"El VIH es algo que ten\u00e9s. No es lo que sos.\"\n4. Discriminaci\u00f3n: Validar + empoderar. La Human Rights Act 1993 NZ protege.\n5. Vida largo plazo: Resiliencia. \"Un mal d\u00eda no dice nada de vos.\"\n6. Odio online: Contener, educar, acci\u00f3n. Netsafe NZ: netsafe.org.nz | 0508 638 723. HRC: hrc.co.nz.\n\nESTRUCTURA DE RESPUESTA: 1) Reconocimiento breve (max 2 l\u00edneas). 2) Una idea clara. 3) Una pregunta natural.\n\nCRISIS (NO NEGOCIABLE): Si escuch\u00e1s \"no puedo m\u00e1s\", \"mejor no estar\", \"I cannot do this anymore\" o similar \u2192 parar TODO y responder SOLO: \"Lo que sent\u00eds importa. Contact\u00e1 ahora: Lifeline 0800 543 354 o 1737. Emergencias: 111.\"\n\nHECHOS VERIFICADOS: U=U confirmado por WHO 2025. 39.9M viven con VIH. 95 casos locales NZ 2024, m\u00ednimo hist\u00f3rico. Nuevas infecciones cayeron 40% desde 2010.\n\nNUNCA: interpretar resultados m\u00e9dicos, generar dependencia emocional, juzgar estilo de vida, recomendar tratamientos espec\u00edficos.\n\nIDENTIDAD: \"Soy NOVA, creado por Emanuel Figueroa, un argentino que vive en Auckland y tiene VIH desde 2011. Estoy ac\u00e1 para vos.\" ";
+
+/* ── API KEY ── */
+const APIKEY = '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';
+
+/* ── STARS ── */
+(()=>{
+  const cv=document.getElementById('stars'),ctx=cv.getContext('2d');
+  let W,H,st=[];
+  const init=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;st=[];for(let i=0;i<160;i++)st.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.2,o:Math.random()*.6+.1,s:Math.random()*.35+.04,t:Math.random()*Math.PI*2,dx:Math.random()*.08-.04})};
+  const draw=()=>{
+    ctx.clearRect(0,0,W,H);
+    [[W*.5,H*.1,320,'rgba(11,123,130,.05)'],[W*.8,H*.55,180,'rgba(16,185,129,.04)'],[W*.15,H*.7,200,'rgba(92,107,192,.04)']].forEach(([x,y,r,c])=>{const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,c);g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(0,0,W,H)});
+    st.forEach(s=>{s.t+=s.s*.016;s.x+=s.dx;if(s.x>W)s.x=0;if(s.x<0)s.x=W;const o=s.o*(.5+.5*Math.sin(s.t));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(160,190,255,'+o+')';ctx.fill()});
+    requestAnimationFrame(draw);
+  };
+  window.addEventListener('resize',init);init();draw();
+})();
+
+/* ── QUICK EXIT ── */
+function qE(){window.location.replace('https://www.google.com')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('pwdOv').classList.contains('on'))qE()});
+
+/* ── PASSWORD ── (Access: burnett2026) ── */
+const CODE='burnett2026';
+function openPwd(){document.getElementById('pwdOv').classList.add('on');setTimeout(()=>document.getElementById('pwdF').focus(),280)}
+function closePwd(){document.getElementById('pwdOv').classList.remove('on');document.getElementById('pwdF').value='';document.getElementById('pwdErr').classList.remove('on')}
+document.getElementById('pwdOv').addEventListener('click',function(e){if(e.target===this)closePwd()});
+function chkPwd(){
+  const v=document.getElementById('pwdF').value.trim().toLowerCase();
+  if(v===CODE){closePwd();showDash()}
+  else{document.getElementById('pwdErr').classList.add('on');document.getElementById('pwdF').value='';document.getElementById('pwdF').focus();setTimeout(()=>document.getElementById('pwdErr').classList.remove('on'),3200)}
+}
+
+/* ── DASHBOARD ── */
+let chartsBuilt=false;
+function showDash(){
+  const d=document.getElementById('pdash');
+  d.style.display='block';
+  d.style.animation='dashIn .8s cubic-bezier(.16,1,.3,1) both';
+  setTimeout(()=>d.scrollIntoView({behavior:'smooth',block:'start'}),140);
+  if(!chartsBuilt){setTimeout(()=>{buildCharts();animDash();chartsBuilt=true},700)}
+}
+function logOut(){document.getElementById('pdash').style.display='none';window.scrollTo({top:0,behavior:'smooth'})}
+
+/* ── CHARTS ── */
+function buildCharts(){
+  Chart.defaults.color='rgba(248,250,252,.4)';
+  Chart.defaults.borderColor='rgba(255,255,255,.06)';
+  Chart.defaults.font.family='DM Sans';
+  Chart.defaults.font.size=11;
+  const TL='#12A5AD',GD='#C8973A',GN='#43A047',RD='#E74C3C',PR='#7B68EE',PK='#E74C8B';
+
+  new Chart(document.getElementById('cAge'),{
+    type:'bar',
+    data:{labels:['16-24','25-34','35-44','45-54','55-64','65+'],
+      datasets:[{data:[18,31,24,14,8,5],borderRadius:4,backgroundColor:['rgba(18,165,173,.9)','rgba(18,165,173,1)','rgba(18,165,173,.75)','rgba(18,165,173,.55)','rgba(18,165,173,.38)','rgba(18,165,173,.22)']}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:function(v){return v+'%'}}},x:{grid:{display:false}}}}
+  });
+
+  new Chart(document.getElementById('cLang'),{
+    type:'doughnut',
+    data:{labels:['English','Spanish','Te Reo Maori','Mixed','Other'],
+      datasets:[{data:[48,32,8,7,5],backgroundColor:[TL,GD,GN,PR,'rgba(255,255,255,.2)'],borderColor:'#0A1628',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{padding:12,usePointStyle:true}}}}
+  });
+
+  new Chart(document.getElementById('cMom'),{
+    type:'radar',
+    data:{labels:['New Diag.','Disclosure','Identity','Discrim.','Long-term','Online Hate'],
+      datasets:[{data:[28,18,22,14,9,9],backgroundColor:'rgba(18,165,173,.1)',borderColor:TL,borderWidth:2,pointBackgroundColor:TL,pointRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{grid:{color:'rgba(255,255,255,.06)'},pointLabels:{font:{size:9},color:'rgba(248,250,252,.45)'},ticks:{display:false},suggestedMin:0,suggestedMax:34}}}
+  });
+
+  new Chart(document.getElementById('cPrep'),{
+    type:'bar',
+    data:{labels:['European NZ','Maori','Pacific','Migrant LatAm','Migrant Asian','Rainbow'],
+      datasets:[
+        {label:'PrEP Awareness',data:[71,48,42,38,35,74],backgroundColor:'rgba(67,160,71,.65)',borderColor:GN,borderWidth:1,borderRadius:4},
+        {label:'On Antivirals',data:[94,81,78,72,68,92],backgroundColor:'rgba(18,165,173,.5)',borderColor:TL,borderWidth:1,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:12,usePointStyle:true}}},scales:{y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:function(v){return v+'%'}},max:100},x:{grid:{display:false},ticks:{font:{size:9}}}}}
+  });
+
+  new Chart(document.getElementById('cMis'),{
+    type:'doughnut',
+    data:{labels:['Social media hate','Medical misinfo','Discriminatory','Threats','Harmful content','Other'],
+      datasets:[{data:[34,22,19,11,8,6],backgroundColor:[RD,GD,PR,PK,'rgba(18,165,173,.7)','rgba(255,255,255,.2)'],borderColor:'#0A1628',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{padding:9,usePointStyle:true,font:{size:10}}}}}
+  });
+
+  new Chart(document.getElementById('cTrend'),{
+    type:'line',
+    data:{labels:['Wk 1','Wk 2','Wk 3','Wk 4','Wk 5','Wk 6','Wk 7','Wk 8'],
+      datasets:[
+        {label:'Avg Stigma Score',data:[4.2,4.0,3.9,3.7,3.6,3.4,3.3,3.1],borderColor:RD,backgroundColor:'rgba(198,40,40,.08)',borderWidth:2.5,fill:true,tension:.4,pointBackgroundColor:RD,pointRadius:5},
+        {label:'Completion %',data:[58,62,65,68,70,72,74,76],borderColor:GN,backgroundColor:'rgba(67,160,71,.08)',borderWidth:2,fill:true,tension:.4,pointBackgroundColor:GN,pointRadius:4,yAxisID:'y2'}]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'bottom',labels:{padding:18,usePointStyle:true}}},scales:{y:{grid:{color:'rgba(255,255,255,.04)'},min:1,max:5},y2:{position:'right',grid:{display:false},min:0,max:100,ticks:{callback:function(v){return v+'%'}}},x:{grid:{display:false}}}}
+  });
+}
+
+function animDash(){
+  const io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en,i){
+      if(en.isIntersecting){
+        setTimeout(function(){
+          en.target.classList.add('on');
+          en.target.querySelectorAll('.sbar-f').forEach(function(b){b.style.width=b.dataset.w+'%'});
+          en.target.querySelectorAll('.kn').forEach(function(el){
+            const t=parseInt(el.dataset.t);let c=0,s=t/60;
+            const tm=setInterval(function(){c=Math.min(c+s,t);el.textContent=Math.floor(c);if(c>=t){el.textContent=t;clearInterval(tm)}},22);
+          });
+        },i*65);
+        io.unobserve(en.target);
+      }
+    });
+  },{threshold:.1});
+  document.querySelectorAll('#pdash .dcard,#pdash .kc').forEach(function(el,i){io.observe(el)});
+}
+
+/* ── MAP TOOLTIPS ── */
+document.querySelectorAll('.rdot').forEach(function(d){
+  d.addEventListener('mouseenter',function(){
+    const t=document.getElementById('mtt');
+    document.getElementById('mttr').textContent=d.dataset.r;
+    document.getElementById('mttc').innerHTML='Sessions: '+d.dataset.s+'<br>Stigma: '+d.dataset.sg+'<br>PrEP awareness: '+d.dataset.p;
+    t.classList.add('on');
+  });
+  d.addEventListener('mouseleave',function(){document.getElementById('mtt').classList.remove('on')});
+  d.addEventListener('mousemove',function(e){
+    const r=d.closest('.nmw').getBoundingClientRect();
+    const t=document.getElementById('mtt');
+    t.style.left=(e.clientX-r.left+10)+'px';
+    t.style.top=(e.clientY-r.top-8)+'px';
+  });
+});
+
+/* ── ECOSYSTEM TOOLTIPS ── */
+document.querySelectorAll('.enode').forEach(function(n){
+  n.addEventListener('mouseenter',function(){
+    document.getElementById('etipT').innerHTML=n.dataset.t;
+    document.getElementById('etipD').innerHTML=n.dataset.d;
+    document.getElementById('etip').classList.add('on');
+  });
+  n.addEventListener('mouseleave',function(){document.getElementById('etip').classList.remove('on')});
+  n.addEventListener('mousemove',function(e){
+    const w=n.closest('.eco-wrap').getBoundingClientRect();
+    const tip=document.getElementById('etip');
+    let l=e.clientX-w.left+14,tp=e.clientY-w.top-10;
+    if(l+230>w.width)l=e.clientX-w.left-240;
+    tip.style.left=l+'px';tip.style.top=tp+'px';
+  });
+});
+
+/* ── COUNTER ANIMATION ── */
+function animCtr(el){
+  const t=parseFloat(el.dataset.t),isDec=el.dataset.d==='1',dur=2000,s0=performance.now();
+  function up(now){const p=Math.min((now-s0)/dur,1),e=1-Math.pow(1-p,3),v=t*e;el.textContent=isDec?v.toFixed(1):Math.floor(v).toLocaleString();if(p<1)requestAnimationFrame(up);else el.textContent=isDec?t.toFixed(1):t.toLocaleString()}
+  requestAnimationFrame(up);
+}
+
+/* ── SCROLL ANIMATIONS ── */
+const io2=new IntersectionObserver(function(entries){
+  entries.forEach(function(en,i){
+    if(en.isIntersecting){
+      setTimeout(function(){
+        en.target.classList.add('on');
+        en.target.querySelectorAll('.cnum').forEach(function(c){animCtr(c)});
+      },parseInt(en.target.dataset.dl||0));
+      io2.unobserve(en.target);
+    }
+  });
+},{threshold:.1});
+document.querySelectorAll('.mcd,.pilc,.scd,.vi,.mwc').forEach(function(el,i){el.dataset.dl=(i%5)*80;io2.observe(el)});
+
+/* ── CHAT ── */
+let chatOpen=false,history=[],msgCt=0;
+
+function toggleChat(){
+  chatOpen=!chatOpen;
+  document.getElementById('cpanel').classList.toggle('on',chatOpen);
+  if(chatOpen&&msgCt===0)initChat();
+}
+function openChat(){if(!chatOpen)toggleChat()}
+
+function initChat(){
+  msgCt=0;
+  document.getElementById('cpSt').textContent='Typing...';
+  showDots();
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':APIKEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:SYS,messages:[{role:'user',content:'[New session — introduce yourself briefly]'}]})
+  })
+  .then(function(r){return r.json()})
+  .then(function(d){
+    hideDots();
+    const txt=d.content&&d.content[0]?d.content[0].text:'Hi — I am NOVA. I am here to support you about HIV. Everything here is completely private. What brings you here today?';
+    history.push({role:'assistant',content:txt});
+    addMsg(txt,'nova');
+    document.getElementById('cpSt').textContent='Online - Ready to listen';
+  })
+  .catch(function(){
+    hideDots();
+    addMsg('Hi — I am NOVA, a digital HIV educator. Everything here is completely private.
+
+What brings you here today?','nova');
+    document.getElementById('cpSt').textContent='Online - Ready to listen';
+  });
+}
+
+function sendMsg(){
+  const inp=document.getElementById('cpInp');
+  const txt=inp.value.trim();
+  if(!txt)return;
+  inp.value='';inp.style.height='40px';msgCt++;
+  addMsg(txt,'user');
+  history.push({role:'user',content:txt});
+  document.getElementById('cpSnd').disabled=true;
+  document.getElementById('cpSt').textContent='Typing...';
+  showDots();
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':APIKEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,system:SYS,messages:history})
+  })
+  .then(function(r){return r.json()})
+  .then(function(d){
+    hideDots();
+    const reply=d.content&&d.content[0]?d.content[0].text:'I had a technical issue. Please try again. If you are in crisis: Lifeline 0800 543 354 or text 1737.';
+    history.push({role:'assistant',content:reply});
+    addMsg(reply,'nova');
+    if(msgCt>=15&&msgCt%15===0)setTimeout(function(){addMsg('We have covered a lot today. Would you like contacts for Body Positive NZ or Burnett Foundation — sometimes it helps to speak to a real person too.','nova')},1200);
+  })
+  .catch(function(){
+    hideDots();
+    addMsg('Technical issue. Please try again. If in crisis: Lifeline 0800 543 354 or text 1737.','nova');
+  })
+  .finally(function(){
+    document.getElementById('cpSnd').disabled=false;
+    document.getElementById('cpSt').textContent='Online - Ready to listen';
+  });
+}
+
+function sendQ(t){document.getElementById('cpInp').value=t;sendMsg()}
+
+function showCrisis(){
+  addMsg('What you are feeling matters. Please connect with real human support right now:\n\n📞 Lifeline Aotearoa: 0800 543 354 (24/7, free)\n💬 Text or call 1737 (24/7, free)\n❤️ Body Positive NZ: bodypositivity.org.nz\n🏥 Burnett Foundation: burnettnz.co.nz\n🚨 Emergency: 111','crisis');
+}
+
+function addMsg(txt,who){
+  const msgs=document.getElementById('cpMsgs');
+  const dots=document.getElementById('tdots');
+  const d=document.createElement('div');
+  d.className='cmsg '+(who==='nova'?'nmsg':who==='crisis'?'crsmsg':'umsg');
+  d.innerHTML=txt.replace(/\n/g,'<br>');
+  msgs.insertBefore(d,dots);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function showDots(){document.getElementById('tdots').style.display='flex';document.getElementById('cpMsgs').scrollTop=9999}
+function hideDots(){document.getElementById('tdots').style.display='none'}
+</script>
+</body>
+</html>
